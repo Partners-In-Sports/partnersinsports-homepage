@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { useReaddyForm } from '@/hooks/useReaddyForm';
-
-const CONTACT_ADDR = 'https://readdy.ai/api/form/dalntfk4ns3ag3t2kdjg';
+import { useContactForm } from '@/hooks/useContactForm';
 
 const privacyNotice = [
   '- 목적: 문의 접수 및 상담',
@@ -11,7 +9,7 @@ const privacyNotice = [
 ];
 
 export default function ContactForm() {
-  const { status, message, handleSubmit } = useReaddyForm(CONTACT_ADDR, 'website_alt');
+  const { status, message, handleSubmit } = useContactForm('website_alt');
   const [consent, setConsent] = useState(false);
   const [consentError, setConsentError] = useState(false);
 
@@ -31,7 +29,6 @@ export default function ContactForm() {
   return (
     <form
       id="contact-inquiry-form"
-      data-readdy-form
       onSubmit={onSubmit}
       className="rounded-lg border border-background-200 bg-background-50 p-6 md:p-8"
       noValidate
