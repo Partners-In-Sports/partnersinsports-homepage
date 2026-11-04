@@ -1,3 +1,8 @@
+// Uploaded image files live in public/uploads. The folder is resolved against the
+// deployment base path (__BASE_PATH__) so the same build keeps working when the
+// site is served from "/" or from a sub-path.
+const uploadsBase = `${__BASE_PATH__.replace(/\/+$/, '')}/uploads/`;
+
 // Official Partners in Sports logo colours — one shared source of truth used
 // by both the navigation and the business-category interactions.
 // Order (used wherever the colours appear as a sequence):
@@ -109,7 +114,7 @@ export const footerLegalLinks = [
 // pinwheel + charcoal wordmark). The horizontal lockup is 303.66 x 77.92, so it
 // is always sized by height and the width follows the intrinsic ratio.
 export const logoAsset = {
-  src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/d44b3ea1-a504-459c-9400-9f89964cbce3_PIS_logo_horizontal.svg',
+  src: `${uploadsBase}logo-main.svg`,
   alt: 'Partners in Sports logo',
   width: 303.66,
   height: 77.92,
@@ -128,21 +133,21 @@ export const heroBackgrounds = [
   {
     id: 'hero-1',
     image:
-      'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/9e3bb808-bdf8-4f69-932f-8bcfd7741f39_compressed_imid597220_Immersive_first_person_batters_eye_view_from_insid_4458b600-e7bd-4038-bb6b-aee021f0070f_1.webp',
+      `${uploadsBase}hero-baseball-stadium.webp`,
     alt: 'Floodlit baseball stadium at night seen from behind home plate',
     focus: 'top',
   },
   {
     id: 'hero-2',
     image:
-      'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/5f236188-9f72-491f-8238-fb1d090c8270_compressed_BU_Hinkel_24x24-01.webp',
+      `${uploadsBase}hero-basketball-arena.webp`,
     alt: 'Indoor basketball arena during a game with players on court',
     focus: 'bottom',
   },
   {
     id: 'hero-3',
     image:
-      'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/38c0e721-3f40-4360-9857-4bd9841e7704_compressed_imid597220_First_person_underwater_sports_photograph_just_aft_191fd102-dbcf-4a0d-83b5-e8e2126e0f15_2.webp',
+      `${uploadsBase}hero-swimming-pool.webp`,
     alt: 'Underwater view of a swimming pool with lane ropes and light ripples',
     focus: 'top',
   },
@@ -277,21 +282,21 @@ export const businessAreas = [
 // 2027 충청 세계대학경기대회 emblem — the same file used above the title on
 // the Chungcheong project detail screens.
 const chungcheong2027Logo =
-  'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/cc020765-e32d-488c-ad5e-3898d0013ede_compressed_chungcheong2027_logo.webp';
+  `${uploadsBase}project-chungcheong-2027-logo.webp`;
 
 // Partner logos — Korea Billiards Federation, University of Tennessee,
 // Shenandoah University. Each partner also has its own detail screen.
 const kbfLogo =
-  'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/04b155b5-5404-4d6b-935a-72840375363a_compressed_kbf_logo-vertical.webp';
+  `${uploadsBase}project-kbf-logo.webp`;
 const tennesseeLogo =
-  'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/98c18d8e-bc36-4556-ad26-89dc2f2db1e7_compressed_tennessee_logo.webp';
+  `${uploadsBase}partner-tennessee-logo.webp`;
 const shenandoahLogo =
-  'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/5c0bd9db-aa42-45b1-ba68-6e20bbefb7b8_compressed_shenandoah_logo.webp';
+  `${uploadsBase}partner-shenandoah-logo.webp`;
 
 // 2024 강원 동계청소년올림픽대회 logo — the exact file shown above the title on
 // the Gangwon project detail screens.
 const gangwon2024Logo =
-  'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/abdcbe4e-4714-4a6f-84af-3a290be35365_compressed_yog2024_logo.webp';
+  `${uploadsBase}project-gangwon-2024-logo.webp`;
 
 // Actual project and partner records. Only the information that has been
 // supplied is shown — titles, and nothing that has not been provided.
@@ -376,7 +381,7 @@ export const projects = [
     imagePosition: 'center center',
     badgeCorner: true,
     image:
-      'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/3aa6caa8-992b-4d88-90db-25e450caff62_compressed_PISswimming_2026-card.webp',
+      `${uploadsBase}project-pis-swimming-2026-card.webp`,
   },
   {
     id: 'proj-evt-2',
@@ -388,7 +393,7 @@ export const projects = [
     imagePosition: 'center',
     imageAlt: '2025 서울시 도그스포츠 대회',
     image:
-      'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/26440add-bf77-491f-84cb-8c8158fa01fd_compressed_dogsports2025_card.webp',
+      `${uploadsBase}project-dogsports-2025-card.webp`,
   },
   {
     id: 'proj-glo-1',

@@ -1,6 +1,11 @@
 // Per-project detail data. One entry can be reused by the shared detail view,
 // so adding a new project with a detail screen only needs a record here.
 
+// Uploaded image files live in public/uploads. The folder is resolved against the
+// deployment base path (__BASE_PATH__) so the same build keeps working when the
+// site is served from "/" or from a sub-path.
+const uploadsBase = `${__BASE_PATH__.replace(/\/+$/, '')}/uploads/`;
+
 const chungcheongOverview = [
   {
     label: '대회명',
@@ -16,28 +21,28 @@ const chungcheongOverview = [
 ];
 
 const chungcheongLogo =
-  'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/cc020765-e32d-488c-ad5e-3898d0013ede_compressed_chungcheong2027_logo.webp';
+  `${uploadsBase}project-chungcheong-2027-logo.webp`;
 
 // 경기운영계획 수립 — 5 posters, in the supplied order.
 const chungcheongOperationsGallery = [
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/5f9a1946-0e96-42d1-8de4-3bf365ae3e44_compressed_chungcheong2027_poster-athletes.webp',
+    src: `${uploadsBase}project-chungcheong-2027-poster-athletes.webp`,
     alt: '2027 충청 세계대학경기대회 운동선수 포스터',
   },
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/1838edd4-c9b7-4b7a-91a1-9dae74459cb9_compressed_chungcheong2027_poster-mascot.webp',
+    src: `${uploadsBase}project-chungcheong-2027-poster-mascot.webp`,
     alt: '2027 충청 세계대학경기대회 호랑이 마스코트 포스터',
   },
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/260f533f-739f-436b-b3f8-814c4e92e12a_compressed_chungcheong2027_keyvisual-wide.webp',
+    src: `${uploadsBase}project-chungcheong-2027-keyvisual-wide.webp`,
     alt: '2027 충청 세계대학경기대회 가로형 키비주얼',
   },
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/8de544cf-76f7-43f7-bcdb-fdf10a364c08_compressed_chungcheong2027_poster-operations-cover-swimming.webp',
+    src: `${uploadsBase}project-chungcheong-2027-poster-operations-swimming.webp`,
     alt: '2027 충청 세계대학경기대회 수영 종목 경기운영 포스터',
   },
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/a5bface0-2394-43da-a82d-a4ee86038d3e_compressed_chungcheong2027_poster-operations-cover-athletics.webp',
+    src: `${uploadsBase}project-chungcheong-2027-poster-operations-athletics.webp`,
     alt: '2027 충청 세계대학경기대회 육상 종목 경기운영 포스터',
   },
 ];
@@ -45,11 +50,11 @@ const chungcheongOperationsGallery = [
 // 마케팅플랜 수립 — 2 posters.
 const chungcheongMarketingGallery = [
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/9aa9a15d-fb72-4ffb-8ad4-fc39c12be863_compressed_chungcheong2027_poster-marketing-cover.webp',
+    src: `${uploadsBase}project-chungcheong-2027-poster-marketing-cover.webp`,
     alt: '2027 충청 세계대학경기대회 마케팅플랜 포스터 표지',
   },
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/f1e7af61-d473-400e-ae9f-1fac4251126a_compressed_chungcheong2027_poster-marketing-title.webp',
+    src: `${uploadsBase}project-chungcheong-2027-poster-marketing-title.webp`,
     alt: '2027 충청 세계대학경기대회 마케팅플랜 타이틀 포스터',
   },
 ];
@@ -57,7 +62,7 @@ const chungcheongMarketingGallery = [
 // 라이선스 종합계획 수립 — single poster, no arrows or counter.
 const chungcheongLicensingGallery = [
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/312e03e2-3591-4483-85bf-0671a25cb0a8_compressed_chungcheong2027_poster-license-cover.webp',
+    src: `${uploadsBase}project-chungcheong-2027-poster-license-cover.webp`,
     alt: '2027 충청 세계대학경기대회 라이선스 종합계획 포스터 표지',
   },
 ];
@@ -70,25 +75,25 @@ const gangwonOverview = [
 ];
 
 const gangwonLogo =
-  'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/abdcbe4e-4714-4a6f-84af-3a290be35365_compressed_yog2024_logo.webp';
+  `${uploadsBase}project-gangwon-2024-logo.webp`;
 
 // 강원 2024 관련 두 프로젝트가 함께 쓰는 갤러리 — 4장, 지정된 순서.
 // 공유 데이터이므로 한 번만 고치면 두 상세 페이지에 동시에 반영된다.
 const gangwonGallery = [
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/8d28d9f9-c163-4950-ae57-bbbe5f6d65d6_compressed_gangwon_yog2024_marketing-cover.webp',
+    src: `${uploadsBase}project-gangwon-2024-marketing-cover.webp`,
     alt: '2024 강원 동계청소년올림픽대회 마케팅 종합계획 표지',
   },
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/86f75332-702b-4553-ae2c-4ee7725fb199_compressed_gangwon_yog2024_poster-festival.webp',
+    src: `${uploadsBase}project-gangwon-2024-poster-festival.webp`,
     alt: '2024 강원 동계청소년올림픽대회 페스티벌 포스터',
   },
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/64404b54-8028-4b36-ae40-a943be9c08eb_compressed_gangwon_yog2024_poster-mascot.webp',
+    src: `${uploadsBase}project-gangwon-2024-poster-mascot.webp`,
     alt: '2024 강원 동계청소년올림픽대회 뭉초 마스코트 포스터',
   },
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/6cd69fe0-8f02-45ce-91a4-8cf0a1ff53c3_compressed_gangwon_yog2024_poster-ticket.webp',
+    src: `${uploadsBase}project-gangwon-2024-poster-ticket.webp`,
     alt: '2024 강원 동계청소년올림픽대회 경기티켓 무료예매 포스터',
   },
 ];
@@ -96,24 +101,24 @@ const gangwonGallery = [
 // 2024 강원YOG 마케팅 모델 연구 — 표지 없이 포스터 3장만 사용.
 const gangwonYogModelGallery = [
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/86f75332-702b-4553-ae2c-4ee7725fb199_compressed_gangwon_yog2024_poster-festival.webp',
+    src: `${uploadsBase}project-gangwon-2024-poster-festival.webp`,
     alt: '2024 강원 동계청소년올림픽대회 페스티벌 포스터',
   },
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/64404b54-8028-4b36-ae40-a943be9c08eb_compressed_gangwon_yog2024_poster-mascot.webp',
+    src: `${uploadsBase}project-gangwon-2024-poster-mascot.webp`,
     alt: '2024 강원 동계청소년올림픽대회 뭉초 마스코트 포스터',
   },
   {
-    src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/6cd69fe0-8f02-45ce-91a4-8cf0a1ff53c3_compressed_gangwon_yog2024_poster-ticket.webp',
+    src: `${uploadsBase}project-gangwon-2024-poster-ticket.webp`,
     alt: '2024 강원 동계청소년올림픽대회 경기티켓 무료예매 포스터',
   },
 ];
 
 const tennesseePartnerLogo =
-  'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/98c18d8e-bc36-4556-ad26-89dc2f2db1e7_compressed_tennessee_logo.webp';
+  `${uploadsBase}partner-tennessee-logo.webp`;
 
 const shenandoahPartnerLogo =
-  'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/5c0bd9db-aa42-45b1-ba68-6e20bbefb7b8_compressed_shenandoah_logo.webp';
+  `${uploadsBase}partner-shenandoah-logo.webp`;
 
 export const projectDetails = {
   'kbf-i-league-2025': {
@@ -122,11 +127,11 @@ export const projectDetails = {
     title: '2025 KBF i-League 연구용역',
     gallery: [
       {
-        src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/49ca1120-f01f-474f-8a72-66948d661bf8_compressed_kbf_ileague-1.webp',
+        src: `${uploadsBase}project-kbf-ileague-2025-report-01.webp`,
         alt: '2025 KBF i-League 연구용역 결과보고서 표지',
       },
       {
-        src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/930a609c-e33d-495a-a454-e6b9b7cc84a5_compressed_kbf_ileague-2.webp',
+        src: `${uploadsBase}project-kbf-ileague-2025-report-02.webp`,
         alt: '2025 KBF i-League 연구용역 보고서 목차',
       },
     ],
@@ -147,11 +152,11 @@ export const projectDetails = {
     title: 'SOOP의 대한당구연맹 스폰서십 효과 분석',
     gallery: [
       {
-        src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/f4aecb0c-cd2b-486a-8a09-447a0ef2ca6c_compressed_kbf_sponsorship-1.webp',
+        src: `${uploadsBase}project-kbf-sponsorship-2025-report-01.webp`,
         alt: 'SOOP의 대한당구연맹 스폰서십 효과 분석 보고서 표지',
       },
       {
-        src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/a4f2ce5e-ca0f-49c8-81a1-11c6929372e4_compressed_kbf_sponsorship-2.webp',
+        src: `${uploadsBase}project-kbf-sponsorship-2025-report-02.webp`,
         alt: 'SOOP의 대한당구연맹 스폰서십 효과 분석 보고서 목차',
       },
     ],
@@ -175,11 +180,11 @@ export const projectDetails = {
     title: '2026 PIS 전국 마스터즈 1,500m 수영대회',
     gallery: [
       {
-        src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/7dcb2d7d-0873-49a8-a21f-70b86f2ebb0e_compressed_PISswimming_2026-poster-01.webp',
+        src: `${uploadsBase}project-pis-swimming-2026-poster-01.webp`,
         alt: '2026 PIS 전국 마스터즈 1,500m 수영대회 포스터 1',
       },
       {
-        src: 'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/53176b42-194f-48c4-8a98-161e5dacb89b_compressed_PISswimming_2026-poster-02.webp',
+        src: `${uploadsBase}project-pis-swimming-2026-poster-02.webp`,
         alt: '2026 PIS 전국 마스터즈 1,500m 수영대회 포스터 2',
       },
     ],
@@ -200,7 +205,7 @@ export const projectDetails = {
     label: 'Sporting Events · 스포츠 이벤트',
     title: '2025 서울시 도그스포츠 대회 계시계측',
     poster:
-      'https://storage.helloreaddy.io/project_files/e0ee9faa-d450-42fc-bfb9-3273dfa5ecd2/03693210-74c9-4c4d-9de6-2df9cdf73199_compressed_dogsports2025_poster.webp',
+      `${uploadsBase}project-dogsports-2025-poster.webp`,
     posterAlt: '2025 서울시 도그스포츠 대회 포스터',
     overviewTitle: '대회 개요',
     overview: [
