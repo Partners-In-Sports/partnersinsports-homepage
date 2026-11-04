@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* background — clean warm neutral canvas */
+  --background-50: 0.995 0.0015 100;
+  --background-100: 0.977 0.0025 100;
+  --background-200: 0.95 0.004 100;
+  --background-300: 0.912 0.005 100;
+  --background-400: 0.854 0.006 100;
+  --background-500: 0.784 0.006 100;
+  --background-600: 0.678 0.006 100;
+  --background-700: 0.548 0.006 100;
+  --background-800: 0.416 0.005 100;
+  --background-900: 0.3 0.004 100;
+  --background-950: 0.196 0.003 100;
+
+  /* foreground — charcoal / ink text scale */
+  --foreground-50: 0.985 0.002 90;
+  --foreground-100: 0.965 0.003 90;
+  --foreground-200: 0.918 0.004 90;
+  --foreground-300: 0.848 0.005 88;
+  --foreground-400: 0.7 0.006 86;
+  --foreground-500: 0.552 0.008 84;
+  --foreground-600: 0.452 0.009 82;
+  --foreground-700: 0.36 0.01 80;
+  --foreground-800: 0.272 0.01 78;
+  --foreground-900: 0.208 0.01 74;
+  --foreground-950: 0.155 0.008 72;
+
+  /* primary — ink charcoal (brand wordmark colour, main CTA) */
+  --primary-50: 0.976 0.002 90;
+  --primary-100: 0.938 0.003 90;
+  --primary-200: 0.868 0.004 88;
+  --primary-300: 0.752 0.005 86;
+  --primary-400: 0.582 0.007 84;
+  --primary-500: 0.302 0.009 80;
+  --primary-600: 0.238 0.009 78;
+  --primary-700: 0.188 0.009 76;
+  --primary-800: 0.15 0.008 74;
+  --primary-900: 0.118 0.007 74;
+  --primary-950: 0.09 0.006 74;
+
+  /* accent — vivid brand red (logo) */
+  --accent-50: 0.968 0.02 26;
+  --accent-100: 0.928 0.05 25;
+  --accent-200: 0.862 0.094 25;
+  --accent-300: 0.762 0.15 26;
+  --accent-400: 0.636 0.208 27;
+  --accent-500: 0.53 0.222 28;
+  --accent-600: 0.466 0.198 28;
+  --accent-700: 0.404 0.168 28;
+  --accent-800: 0.342 0.138 28;
+  --accent-900: 0.282 0.108 28;
+  --accent-950: 0.204 0.078 28;
+
+  /* secondary — quiet warm neutral support */
+  --secondary-50: 0.978 0.003 96;
+  --secondary-100: 0.948 0.005 96;
+  --secondary-200: 0.902 0.007 96;
+  --secondary-300: 0.836 0.009 96;
+  --secondary-400: 0.726 0.011 96;
+  --secondary-500: 0.62 0.012 96;
+  --secondary-600: 0.518 0.012 96;
+  --secondary-700: 0.428 0.011 96;
+  --secondary-800: 0.34 0.009 96;
+  --secondary-900: 0.264 0.008 96;
+  --secondary-950: 0.186 0.006 96;
+
+  /* official logo colours — used only for small, controlled accents */
+  --brand-cyan: 0.7 0.13 226;
+  --brand-yellow: 0.85 0.17 95;
+  --brand-red: 0.55 0.22 28;
+  --brand-green: 0.62 0.16 152;
+
+  --font-heading: 'Archivo', 'Inter', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-label: 'Archivo', 'Inter', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: oklch(var(--background-50));
+  color: oklch(var(--foreground-950));
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-heading);
+}
+
+/* fixed-header offset for smooth-scroll anchors */
+section[id] {
+  scroll-margin-top: 84px;
+}
+
+/* keyboard-accessible focus ring */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid oklch(var(--accent-500));
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   Korean typesetting
+   keep-all breaks lines between Korean words instead of inside a word, and has
+   no effect on Latin text (it behaves like normal there). overflow-wrap is the
+   escape hatch so a single very long token can still break instead of
+   overflowing its container.
+   --------------------------------------------------------------------------- */
+body {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* Korean copy: never inherit the wide letter-spacing that only exists to space
+   out Latin uppercase labels. Declared after the Tailwind utilities so it wins
+   over tracking-* classes without touching the English labels themselves. */
+.ko {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  letter-spacing: normal;
+}
+
+/* auxiliary field kept off-screen for automated submissions */
+.aux-field {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------------
+   Hero headline + byline — one brand gradient (yellow → green → red → cyan)
+   that fills in from the left, driven by --pis-reveal (0 → 1).
+   The white copy sits underneath and is clipped away wherever the gradient
+   covers it, so no white fringe can show at the glyph edges.
+   --------------------------------------------------------------------------- */
+.pis-hero-copy {
+  --pis-brand-grad: linear-gradient(
+    90deg,
+    oklch(var(--brand-yellow)) 0%,
+    oklch(var(--brand-green)) 34%,
+    oklch(var(--brand-red)) 67%,
+    oklch(var(--brand-cyan)) 100%
+  );
+  --pis-ease: 0.82s cubic-bezier(0.45, 0.05, 0.25, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pis-hero-copy:hover {
+    --pis-reveal: 1;
+  }
+}
+
+.pis-headline {
+  position: relative;
+  display: inline-block;
+}
+
+.pis-headline-base {
+  display: inline-block;
+  clip-path: inset(0 0 0 calc(var(--pis-reveal, 0) * 100%));
+  transition: clip-path var(--pis-ease);
+}
+
+.pis-headline-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--pis-brand-grad);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  clip-path: inset(0 calc((1 - var(--pis-reveal, 0)) * 100%) 0 0);
+  transition: clip-path var(--pis-ease);
+  will-change: clip-path;
+}
+
+/* Byline row: label + rule, both painted from one shared gradient sweep so the
+   colour continues across the gap without restarting. */
+.pis-byline {
+  position: relative;
+  max-width: 100%;
+  --pis-row-w: 100%;
+}
+
+.pis-byline-layer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.pis-byline-layer--tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  clip-path: inset(0 calc((1 - var(--pis-reveal, 0)) * 100%) 0 0);
+  transition: clip-path var(--pis-ease);
+}
+
+.pis-byline-text {
+  flex: 0 0 auto;
+  font-family: var(--font-label);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: oklch(var(--background-50));
+  clip-path: inset(0 0 0 calc(var(--pis-reveal, 0) * var(--pis-row-w, 0px)));
+  transition: clip-path var(--pis-ease);
+}
+
+.pis-byline-text--tint {
+  background-image: var(--pis-brand-grad);
+  background-size: var(--pis-row-w) 100%;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  clip-path: none;
+  transition: none;
+}
+
+@media (min-width: 768px) {
+  .pis-byline-text {
+    font-size: 20px;
+    letter-spacing: 0.34em;
+  }
+}
+
+.pis-byline-rule {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 2px;
+  border-radius: 999px;
+  background-color: oklch(var(--background-50) / 0.4);
+}
+
+.pis-byline-rule--tint {
+  background-color: transparent;
+  background-image: var(--pis-brand-grad);
+  background-size: var(--pis-row-w) 100%;
+  background-repeat: no-repeat;
+  background-position: calc(var(--pis-rule-start, 0px) * -1) center;
+}
+
+/* Entrance-driven (touch) mode: no easing, the value already moves per frame. */
+.pis-reveal-driven .pis-headline-base,
+.pis-reveal-driven .pis-headline-tint,
+.pis-reveal-driven .pis-byline-layer--tint,
+.pis-reveal-driven .pis-byline-text {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pis-headline-base,
+  .pis-headline-tint,
+  .pis-byline-layer--tint,
+  .pis-byline-text {
+    transition: none;
+  }
+}
+
+@keyframes pis-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.pis-marquee-track {
+  animation: pis-marquee 34s linear infinite;
+}
+
+@keyframes pis-slow-zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.09); }
+}
+
+.pis-slow-zoom {
+  animation: pis-slow-zoom 9s ease-out both;
+}
