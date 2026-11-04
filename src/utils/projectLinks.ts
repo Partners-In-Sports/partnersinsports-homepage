@@ -1,4 +1,4 @@
-import { projects } from '@/mocks/site';
+import { projects } from '@/content/projects';
 
 /**
  * Business areas no longer have their own pages — they open the Projects page

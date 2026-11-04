@@ -1,0 +1,61 @@
+{
+  "title": "2024 강원 동계청소년올림픽대회 마케팅 종합계획 수립",
+  "slug": "gangwon-2024-marketing-plan",
+  "category": "research",
+  "cardLabel": "Research Projects",
+  "cardType": "A",
+  "order": 6,
+  "cardImage": "/uploads/project-gangwon-2024-logo.webp",
+  "cardImageFit": "contain",
+  "cardImagePosition": "center top",
+  "cardImageAlt": "",
+  "badgeCorner": false,
+  "label": "Research Projects · 연구 프로젝트",
+  "logoImage": "/uploads/project-gangwon-2024-logo.webp",
+  "logoAlt": "2024 강원 동계청소년올림픽대회 로고",
+  "posterImage": "",
+  "posterAlt": "",
+  "gallery": [
+    {
+      "image": "/uploads/project-gangwon-2024-marketing-cover.webp",
+      "alt": "2024 강원 동계청소년올림픽대회 마케팅 종합계획 표지"
+    },
+    {
+      "image": "/uploads/project-gangwon-2024-poster-festival.webp",
+      "alt": "2024 강원 동계청소년올림픽대회 페스티벌 포스터"
+    },
+    {
+      "image": "/uploads/project-gangwon-2024-poster-mascot.webp",
+      "alt": "2024 강원 동계청소년올림픽대회 뭉초 마스코트 포스터"
+    },
+    {
+      "image": "/uploads/project-gangwon-2024-poster-ticket.webp",
+      "alt": "2024 강원 동계청소년올림픽대회 경기티켓 무료예매 포스터"
+    }
+  ],
+  "galleryThumbnails": true,
+  "overviewTitle": "대회 개요",
+  "overview": [
+    {
+      "label": "대회명",
+      "value": "2024 강원 동계청소년올림픽대회"
+    },
+    {
+      "label": "일시",
+      "value": "2024.01.19 ~ 02.01"
+    },
+    {
+      "label": "장소",
+      "value": "평창, 강릉, 정선, 횡성"
+    },
+    {
+      "label": "규모",
+      "value": "80여 개국 1,900명 선수"
+    }
+  ],
+  "tasksTitle": "주요 업무",
+  "tasks": [
+    "2024 강원 동계청소년올림픽대회 마케팅 종합계획 수립"
+  ],
+  "contactLabel": "문의하기"
+}

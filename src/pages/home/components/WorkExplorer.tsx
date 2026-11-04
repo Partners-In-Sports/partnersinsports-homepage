@@ -2,7 +2,8 @@ import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '@/components/base/Reveal';
 import SectionHeading from '@/components/base/SectionHeading';
-import { projects, sectionAccentSoft, sectionAccents, workCategories, workIntro } from '@/mocks/site';
+import { projects } from '@/content/projects';
+import { sectionAccentSoft, sectionAccents, workCategories, workIntro } from '@/mocks/site';
 import { areaFilterHref } from '@/utils/projectLinks';
 
 export default function WorkExplorer() {

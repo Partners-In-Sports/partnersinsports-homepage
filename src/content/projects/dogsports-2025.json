@@ -1,0 +1,52 @@
+{
+  "title": "2025 서울시 도그스포츠 대회 계시계측",
+  "slug": "dogsports-2025",
+  "category": "events",
+  "cardLabel": "Sporting Events",
+  "cardType": "A",
+  "order": 9,
+  "cardImage": "/uploads/project-dogsports-2025-card.webp",
+  "cardImageFit": "cover",
+  "cardImagePosition": "center",
+  "cardImageAlt": "2025 서울시 도그스포츠 대회",
+  "badgeCorner": false,
+  "label": "Sporting Events · 스포츠 이벤트",
+  "logoImage": "",
+  "logoAlt": "",
+  "posterImage": "/uploads/project-dogsports-2025-poster.webp",
+  "posterAlt": "2025 서울시 도그스포츠 대회 포스터",
+  "gallery": [],
+  "galleryThumbnails": false,
+  "overviewTitle": "대회 개요",
+  "overview": [
+    {
+      "label": "대회명",
+      "value": "제1회 서울시 도그스포츠 대회"
+    },
+    {
+      "label": "일시",
+      "value": "2025.09.20(토) ~ 09.21(일), 2일간"
+    },
+    {
+      "label": "장소",
+      "value": "월드컵공원 평화광장"
+    },
+    {
+      "label": "주최",
+      "value": "서울특별시"
+    },
+    {
+      "label": "주관",
+      "value": "㈜케이씨엠씨문화원"
+    },
+    {
+      "label": "주요 프로그램",
+      "value": "어질리티 대회, 반려견 학생훈련대회, 캐니크로스·캐니워킹, 견공올림픽, 강의·체험 부스"
+    }
+  ],
+  "tasksTitle": "주요 업무",
+  "tasks": [
+    "경기 기록 계시·계측"
+  ],
+  "contactLabel": "문의하기"
+}

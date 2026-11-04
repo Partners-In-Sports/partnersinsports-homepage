@@ -1,6 +1,7 @@
 import PageHero from '@/components/feature/PageHero';
 import CtaBand from '@/components/feature/CtaBand';
-import { projects, sectionAccents } from '@/mocks/site';
+import { projects } from '@/content/projects';
+import { sectionAccents } from '@/mocks/site';
 import ProjectsListing from './components/ProjectsListing';
 
 export default function ProjectsIndex() {

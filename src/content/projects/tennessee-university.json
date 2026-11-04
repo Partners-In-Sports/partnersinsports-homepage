@@ -1,0 +1,27 @@
+{
+  "title": "University of Tennessee (USA)",
+  "slug": "tennessee-university",
+  "category": "global",
+  "cardLabel": "Global Partnerships",
+  "cardType": "A",
+  "order": 10,
+  "cardImage": "/uploads/partner-tennessee-logo.webp",
+  "cardImageFit": "contain",
+  "cardImagePosition": "center top",
+  "cardImageAlt": "",
+  "badgeCorner": false,
+  "label": "Global Partnerships · 글로벌 파트너십",
+  "logoImage": "/uploads/partner-tennessee-logo.webp",
+  "logoAlt": "University of Tennessee logo",
+  "posterImage": "",
+  "posterAlt": "",
+  "gallery": [],
+  "galleryThumbnails": false,
+  "overviewTitle": "파트너 개요",
+  "overview": [],
+  "tasksTitle": "주요 업무",
+  "tasks": [
+    "한-미 스포츠분야 상호 교류 및 협력"
+  ],
+  "contactLabel": "문의하기"
+}

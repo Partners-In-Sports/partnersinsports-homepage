@@ -1,0 +1,53 @@
+{
+  "title": "SOOP의 대한당구연맹 스폰서십 효과 분석",
+  "slug": "kbf-sponsorship-2025",
+  "category": "research",
+  "cardLabel": "Research Projects",
+  "cardType": "A",
+  "order": 4,
+  "cardImage": "/uploads/project-kbf-logo.webp",
+  "cardImageFit": "contain",
+  "cardImagePosition": "center top",
+  "cardImageAlt": "",
+  "badgeCorner": false,
+  "label": "Research Projects · 연구 프로젝트",
+  "logoImage": "",
+  "logoAlt": "",
+  "posterImage": "",
+  "posterAlt": "",
+  "gallery": [
+    {
+      "image": "/uploads/project-kbf-sponsorship-2025-report-01.webp",
+      "alt": "SOOP의 대한당구연맹 스폰서십 효과 분석 보고서 표지"
+    },
+    {
+      "image": "/uploads/project-kbf-sponsorship-2025-report-02.webp",
+      "alt": "SOOP의 대한당구연맹 스폰서십 효과 분석 보고서 목차"
+    }
+  ],
+  "galleryThumbnails": false,
+  "overviewTitle": "사업 개요",
+  "overview": [
+    {
+      "label": "사업명",
+      "value": "SOOP의 대한당구연맹 스폰서십 효과 분석"
+    },
+    {
+      "label": "발주",
+      "value": "대한당구연맹(KBF)"
+    },
+    {
+      "label": "시기",
+      "value": "2025.12"
+    },
+    {
+      "label": "보고서 구성",
+      "value": "전략적/비재무적 가치 분석 / 미디어 노출 효과 분석 / 결론 / Appendix"
+    }
+  ],
+  "tasksTitle": "주요 업무",
+  "tasks": [
+    "대한당구연맹 후원사 SOOP의 스폰서십 프로그램 참여 효과 분석"
+  ],
+  "contactLabel": "문의하기"
+}

@@ -1,6 +1,6 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { workCategories } from '@/mocks/site';
-import { projectDetails } from '@/mocks/projectDetails';
+import { getProjectDetail } from '@/content/projects';
 import { areaFilterHref } from '@/utils/projectLinks';
 import ProjectDetail from '@/components/feature/ProjectDetail';
 
@@ -12,7 +12,7 @@ import ProjectDetail from '@/components/feature/ProjectDetail';
  */
 export default function ProjectSlugRoute() {
   const { slug } = useParams();
-  const detail = slug ? projectDetails[slug as keyof typeof projectDetails] : undefined;
+  const detail = getProjectDetail(slug);
 
   if (detail) {
     return <ProjectDetail data={detail} />;

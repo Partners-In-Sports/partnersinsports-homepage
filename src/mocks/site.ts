@@ -183,7 +183,7 @@ export const workCategories = [
     accent: brandColors.yellow,
     accentSoft: 'rgba(244, 196, 0, 0.18)',
     image:
-      'https://readdy.ai/api/search-image?query=Editorial%20photograph%20of%20a%20sports%20performance%20analysis%20room%20with%20large%20screens%20showing%20data%20charts%20and%20a%20stadium%20match%20on%20display%2C%20soft%20neutral%20daylight%2C%20muted%20warm%20gray%20and%20charcoal%20tones%2C%20clean%20corporate%20sports%20research%20photography&width=1200&height=900&seq=pis-work-research&orientation=landscape',
+      `${uploadsBase}work-research.jpg`,
   },
   {
     id: 'events',
@@ -198,7 +198,7 @@ export const workCategories = [
     accent: brandColors.green,
     accentSoft: 'rgba(0, 149, 75, 0.14)',
     image:
-      'https://readdy.ai/api/search-image?query=Editorial%20photograph%20of%20a%20packed%20international%20stadium%20during%20an%20opening%20ceremony%20with%20flags%20and%20floodlights%2C%20wide%20angle%2C%20muted%20charcoal%20tones%2C%20dramatic%20professional%20sports%20event%20photography&width=1200&height=900&seq=pis-work-events&orientation=landscape',
+      `${uploadsBase}work-events.jpg`,
   },
   {
     id: 'global',
@@ -214,7 +214,7 @@ export const workCategories = [
     accent: brandColors.red,
     accentSoft: 'rgba(228, 0, 43, 0.14)',
     image:
-      'https://readdy.ai/api/search-image?query=Editorial%20photograph%20of%20an%20international%20sports%20partnership%20meeting%20with%20diverse%20delegates%20in%20a%20bright%20modern%20hall%20with%20national%20flags%2C%20soft%20neutral%20daylight%2C%20clean%20corporate%20photography&width=1200&height=900&seq=pis-work-global&orientation=landscape',
+      `${uploadsBase}work-global.jpg`,
   },
   {
     id: 'merchandising',
@@ -229,7 +229,7 @@ export const workCategories = [
     accent: brandColors.cyan,
     accentSoft: 'rgba(21, 168, 224, 0.14)',
     image:
-      'https://readdy.ai/api/search-image?query=Editorial%20photograph%20of%20a%20clean%20sports%20merchandise%20display%20with%20folded%20jerseys%20caps%20and%20scarves%20on%20light%20neutral%20surfaces%2C%20soft%20studio%20lighting%2C%20professional%20product%20photography&width=1200&height=900&seq=pis-work-merch&orientation=landscape',
+      `${uploadsBase}work-merch.jpg`,
   },
 ];
 
@@ -279,144 +279,10 @@ export const businessAreas = [
   },
 ];
 
-// 2027 충청 세계대학경기대회 emblem — the same file used above the title on
-// the Chungcheong project detail screens.
-const chungcheong2027Logo =
-  `${uploadsBase}project-chungcheong-2027-logo.webp`;
-
-// Partner logos — Korea Billiards Federation, University of Tennessee,
-// Shenandoah University. Each partner also has its own detail screen.
-const kbfLogo =
-  `${uploadsBase}project-kbf-logo.webp`;
-const tennesseeLogo =
-  `${uploadsBase}partner-tennessee-logo.webp`;
-const shenandoahLogo =
-  `${uploadsBase}partner-shenandoah-logo.webp`;
-
-// 2024 강원 동계청소년올림픽대회 logo — the exact file shown above the title on
-// the Gangwon project detail screens.
-const gangwon2024Logo =
-  `${uploadsBase}project-gangwon-2024-logo.webp`;
-
-// Actual project and partner records. Only the information that has been
-// supplied is shown — titles, and nothing that has not been provided.
-export const projects = [
-  {
-    id: 'proj-res-1',
-    category: 'research',
-    categoryLabel: 'Research Projects',
-    title: '2027 충청 세계대학경기대회 경기운영계획 수립',
-    // Has its own detail screen — /projects/chungcheong-2027-operations
-    slug: 'chungcheong-2027-operations',
-    image: chungcheong2027Logo,
-    imageFit: 'contain',
-  },
-  {
-    id: 'proj-res-2',
-    category: 'research',
-    categoryLabel: 'Research Projects',
-    title: '2027 충청 세계대학경기대회 마케팅플랜 수립',
-    // Has its own detail screen — /projects/chungcheong-2027-marketing
-    slug: 'chungcheong-2027-marketing',
-    image: chungcheong2027Logo,
-    imageFit: 'contain',
-  },
-  {
-    id: 'proj-res-3',
-    category: 'research',
-    categoryLabel: 'Research Projects',
-    title: '2027 충청 세계대학경기대회 라이선스 종합계획 수립',
-    // Has its own detail screen — /projects/chungcheong-2027-licensing
-    slug: 'chungcheong-2027-licensing',
-    image: chungcheong2027Logo,
-    imageFit: 'contain',
-  },
-  {
-    id: 'proj-res-4',
-    category: 'research',
-    categoryLabel: 'Research Projects',
-    title: 'SOOP의 대한당구연맹 스폰서십 효과 분석',
-    // Has its own detail screen — /projects/kbf-sponsorship-2025
-    slug: 'kbf-sponsorship-2025',
-    image: kbfLogo,
-    imageFit: 'contain',
-  },
-  {
-    id: 'proj-res-5',
-    category: 'research',
-    categoryLabel: 'Research Projects',
-    title: '2025 KBF i-League 연구용역',
-    // Has its own detail screen — /projects/kbf-i-league-2025
-    slug: 'kbf-i-league-2025',
-    image: kbfLogo,
-    imageFit: 'contain',
-  },
-  {
-    id: 'proj-res-6',
-    category: 'research',
-    categoryLabel: 'Research Projects',
-    title: '2024 강원 동계청소년올림픽대회 마케팅 종합계획 수립',
-    // Has its own detail screen — /projects/gangwon-2024-marketing-plan
-    slug: 'gangwon-2024-marketing-plan',
-    image: gangwon2024Logo,
-    imageFit: 'contain',
-  },
-  {
-    id: 'proj-res-7',
-    category: 'research',
-    categoryLabel: 'Research Projects',
-    title: '2024 강원YOG 마케팅 모델 연구',
-    // Has its own detail screen — /projects/gangwon-yog-marketing-model
-    slug: 'gangwon-yog-marketing-model',
-    image: gangwon2024Logo,
-    imageFit: 'contain',
-  },
-  {
-    id: 'proj-evt-1',
-    category: 'events',
-    categoryLabel: 'Sporting Events',
-    title: '2026 PIS 전국 마스터즈 1,500m 수영대회',
-    // Has its own detail screen — /projects/pis-swimming-2026
-    slug: 'pis-swimming-2026',
-    imagePosition: 'center center',
-    badgeCorner: true,
-    image:
-      `${uploadsBase}project-pis-swimming-2026-card.webp`,
-  },
-  {
-    id: 'proj-evt-2',
-    category: 'events',
-    categoryLabel: 'Sporting Events',
-    title: '2025 서울시 도그스포츠 대회 계시계측',
-    // Has its own detail screen — /projects/dogsports-2025
-    slug: 'dogsports-2025',
-    imagePosition: 'center',
-    imageAlt: '2025 서울시 도그스포츠 대회',
-    image:
-      `${uploadsBase}project-dogsports-2025-card.webp`,
-  },
-  {
-    id: 'proj-glo-1',
-    category: 'global',
-    categoryLabel: 'Global Partnerships',
-    title: 'University of Tennessee (USA)',
-    // Has its own detail screen — /projects/tennessee-university
-    slug: 'tennessee-university',
-    image: tennesseeLogo,
-    imageFit: 'contain',
-  },
-  {
-    id: 'proj-glo-2',
-    category: 'global',
-    categoryLabel: 'Global Partnerships',
-    title: 'Shenandoah University (USA)',
-    // Has its own detail screen — /projects/shenandoah-university
-    slug: 'shenandoah-university',
-    image: shenandoahLogo,
-    imageFit: 'contain',
-  },
-];
-
+// Project records are not kept here. Every project lives in its own JSON file
+// under src/content/projects/ and is loaded from @/content/projects.
+// Project records are not kept here. Every project lives in its own JSON file
+// under src/content/projects/ and is loaded from @/content/projects.
 export const aboutContent = {
   eyebrow: 'Who we are',
   title: 'About Partners in Sports',
@@ -426,7 +292,7 @@ export const aboutContent = {
     '다양한 국제스포츠 현장경험 및 국제스포츠기관과의 강력한 네트워크를 바탕으로 스포츠단체, 기업 및 운동선수의 성공을 돕는 최고의 파트너가 될 것이며, 궁극적으로 우리나라 스포츠의 선진화에 기여하고자 합니다.',
   ],
   image:
-    'https://readdy.ai/api/search-image?query=Editorial%20wide%20photograph%20of%20a%20bright%20modern%20office%20meeting%20room%20in%20Seoul%20with%20large%20windows%20overlooking%20the%20city%2C%20a%20world%20map%20on%20the%20wall%20and%20sports%20strategy%20documents%20on%20the%20table%2C%20soft%20daylight%2C%20clean%20neutral%20tones%2C%20professional%20corporate%20photography&width=1400&height=1000&seq=pis-about-1&orientation=landscape',
+    `${uploadsBase}about-seoul-office.jpg`,
   imageAlt: 'Partners in Sports meeting room in Seoul',
 };
 

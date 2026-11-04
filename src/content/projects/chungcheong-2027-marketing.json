@@ -1,0 +1,57 @@
+{
+  "title": "2027 충청 세계대학경기대회 마케팅플랜 수립",
+  "slug": "chungcheong-2027-marketing",
+  "category": "research",
+  "cardLabel": "Research Projects",
+  "cardType": "A",
+  "order": 2,
+  "cardImage": "/uploads/project-chungcheong-2027-logo.webp",
+  "cardImageFit": "contain",
+  "cardImagePosition": "center top",
+  "cardImageAlt": "",
+  "badgeCorner": false,
+  "label": "Research Projects · 연구 프로젝트",
+  "logoImage": "/uploads/project-chungcheong-2027-logo.webp",
+  "logoAlt": "2027 충청 세계대학경기대회 엠블럼",
+  "posterImage": "",
+  "posterAlt": "",
+  "gallery": [
+    {
+      "image": "/uploads/project-chungcheong-2027-poster-marketing-cover.webp",
+      "alt": "2027 충청 세계대학경기대회 마케팅플랜 포스터 표지"
+    },
+    {
+      "image": "/uploads/project-chungcheong-2027-poster-marketing-title.webp",
+      "alt": "2027 충청 세계대학경기대회 마케팅플랜 타이틀 포스터"
+    }
+  ],
+  "galleryThumbnails": false,
+  "overviewTitle": "대회 개요",
+  "overview": [
+    {
+      "label": "대회명",
+      "value": "2027 충청 세계대학경기대회 (FISU World University Games Summer)"
+    },
+    {
+      "label": "일시",
+      "value": "2027.08.01 ~ 08.12"
+    },
+    {
+      "label": "개최지",
+      "value": "충청권 4개 시도 (대전·세종·충북·충남)"
+    },
+    {
+      "label": "주최·주관",
+      "value": "국제대학스포츠연맹(FISU), 2027 충청 하계세계대학경기대회 조직위원회"
+    },
+    {
+      "label": "규모",
+      "value": "150개국 15,000여 명"
+    }
+  ],
+  "tasksTitle": "주요 업무",
+  "tasks": [
+    "마케팅플랜 수립"
+  ],
+  "contactLabel": "문의하기"
+}

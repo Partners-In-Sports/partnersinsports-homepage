@@ -1,0 +1,57 @@
+{
+  "title": "2026 PIS 전국 마스터즈 1,500m 수영대회",
+  "slug": "pis-swimming-2026",
+  "category": "events",
+  "cardLabel": "Sporting Events",
+  "cardType": "A",
+  "order": 8,
+  "cardImage": "/uploads/project-pis-swimming-2026-card.webp",
+  "cardImageFit": "cover",
+  "cardImagePosition": "center center",
+  "cardImageAlt": "",
+  "badgeCorner": true,
+  "label": "Sporting Events · 스포츠 이벤트",
+  "logoImage": "",
+  "logoAlt": "",
+  "posterImage": "",
+  "posterAlt": "",
+  "gallery": [
+    {
+      "image": "/uploads/project-pis-swimming-2026-poster-01.webp",
+      "alt": "2026 PIS 전국 마스터즈 1,500m 수영대회 포스터 1"
+    },
+    {
+      "image": "/uploads/project-pis-swimming-2026-poster-02.webp",
+      "alt": "2026 PIS 전국 마스터즈 1,500m 수영대회 포스터 2"
+    }
+  ],
+  "galleryThumbnails": false,
+  "overviewTitle": "대회 개요",
+  "overview": [
+    {
+      "label": "대회명",
+      "value": "2026 PIS 전국 마스터즈 1,500m 수영대회"
+    },
+    {
+      "label": "일시",
+      "value": "2026.02.22(일)"
+    },
+    {
+      "label": "장소",
+      "value": "잠실종합운동장 제1수영장"
+    },
+    {
+      "label": "주최",
+      "value": "㈜파트너스인스포츠"
+    },
+    {
+      "label": "협력",
+      "value": "서울특별시수영연맹"
+    }
+  ],
+  "tasksTitle": "주요 업무",
+  "tasks": [
+    "대회 기획 및 운영"
+  ],
+  "contactLabel": "문의하기"
+}
