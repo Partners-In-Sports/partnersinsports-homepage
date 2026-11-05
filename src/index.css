@@ -43,18 +43,18 @@
   --primary-900: 0.118 0.007 74;
   --primary-950: 0.09 0.006 74;
 
-  /* accent — vivid brand red (logo) */
-  --accent-50: 0.968 0.02 26;
-  --accent-100: 0.928 0.05 25;
-  --accent-200: 0.862 0.094 25;
-  --accent-300: 0.762 0.15 26;
-  --accent-400: 0.636 0.208 27;
-  --accent-500: 0.53 0.222 28;
-  --accent-600: 0.466 0.198 28;
-  --accent-700: 0.404 0.168 28;
-  --accent-800: 0.342 0.138 28;
-  --accent-900: 0.282 0.108 28;
-  --accent-950: 0.204 0.078 28;
+  /* accent — brand red (#ec1b23) scale */
+  --accent-50: 0.975 0.017 25;
+  --accent-100: 0.94 0.045 25;
+  --accent-200: 0.87 0.09 26;
+  --accent-300: 0.77 0.15 26;
+  --accent-400: 0.65 0.201 27;
+  --accent-500: 0.575 0.226 27;
+  --accent-600: 0.51 0.205 27;
+  --accent-700: 0.44 0.175 27;
+  --accent-800: 0.375 0.145 27;
+  --accent-900: 0.31 0.115 27;
+  --accent-950: 0.22 0.08 27;
 
   /* secondary — quiet warm neutral support */
   --secondary-50: 0.978 0.003 96;
@@ -69,11 +69,24 @@
   --secondary-900: 0.264 0.008 96;
   --secondary-950: 0.186 0.006 96;
 
-  /* official logo colours — used only for small, controlled accents */
-  --brand-cyan: 0.7 0.13 226;
-  --brand-yellow: 0.85 0.17 95;
-  --brand-red: 0.55 0.22 28;
-  --brand-green: 0.62 0.16 152;
+  /* -------------------------------------------------------------------------
+     Official brand palette — the five logo colours.
+     yellow #fff100 · green #00a550 · red #ec1b23 · blue #00adee · ink #221e1f
+     These are the only brand colours. Everything else is a lighter or deeper
+     tone of the same family (see the -deep / -soft tokens below).
+     ------------------------------------------------------------------------- */
+  --brand-yellow: 0.968 0.211 109;
+  --brand-green: 0.6 0.16 155;
+  --brand-red: 0.575 0.226 27;
+  --brand-blue: 0.692 0.145 233;
+  --brand-ink: 0.232 0.004 20;
+
+  /* alias kept for existing references */
+  --brand-cyan: 0.692 0.145 233;
+
+  /* deeper tones — only for legibility (small text, icons, links) */
+  --brand-yellow-deep: 0.615 0.135 89;
+  --brand-blue-deep: 0.5 0.105 233;
 
   --font-heading: 'Archivo', 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;

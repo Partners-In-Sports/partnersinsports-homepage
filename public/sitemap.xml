@@ -26,6 +26,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://podbvc.readdy.co/privacy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://podbvc.readdy.co/projects/chungcheong-2027-operations</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>

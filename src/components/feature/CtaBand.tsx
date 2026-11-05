@@ -28,13 +28,6 @@ export default function CtaBand({
             문의하기
             <i className="ri-arrow-right-line w-4 h-4 flex items-center justify-center" />
           </Link>
-          <Link
-            to="/contact#visit"
-            className="inline-flex items-center justify-center gap-2 rounded-md border border-background-300 px-7 py-3.5 text-sm font-label text-foreground-950 whitespace-nowrap cursor-pointer transition-colors hover:border-foreground-950"
-          >
-            <i className="ri-map-pin-line w-4 h-4 flex items-center justify-center" />
-            <span className="ko">방문 안내</span>
-          </Link>
         </div>
       </div>
     </section>

@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
+import { Link } from 'react-router-dom';
+import EmailText from '@/components/base/EmailText';
 import { useContactForm } from '@/hooks/useContactForm';
-
-const privacyNotice = [
-  '- 목적: 문의 접수 및 상담',
-  '- 항목: 이름, Email, 제목, 내용',
-  '- 보유기간: 목적 달성 완료 시 즉시 삭제 (단, 내부방침 및 관계법령의 규정에 의하여 보존할 필요가 있는 경우 일정기간 동안 보관)',
-];
+import {
+  consentCheckboxLabel,
+  consentEntrust,
+  consentLinkLabel,
+  consentRefusal,
+  consentRows,
+  consentTitle,
+} from '@/content/legal';
 
 export default function ContactForm() {
   const { status, message, handleSubmit } = useContactForm('website_alt');
@@ -36,10 +40,6 @@ export default function ContactForm() {
       <h3 className="font-heading text-xl font-bold tracking-tight text-foreground-950">
         문의 접수
       </h3>
-      <p className="mt-2 text-sm text-foreground-600">
-        프로젝트나 협업에 대해 문의해 주세요. 확인 후 신속히 답변드리겠습니다.
-      </p>
-
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div className="flex flex-col">
           <label htmlFor="contact-name" className="ko font-label text-[11px] tracking-[0.14em] uppercase text-foreground-600 mb-2">
@@ -109,55 +109,75 @@ export default function ContactForm() {
       />
 
       <div className="mt-6 border-t border-background-200 pt-6">
-        <h4 className="ko font-label text-[11px] tracking-[0.18em] uppercase text-foreground-500">
-          개인정보 수집 및 이용 안내
+        <h4 className="ko font-label text-[11px] tracking-[0.18em] uppercase text-foreground-600">
+          {consentTitle}
         </h4>
-        <ul className="mt-3 space-y-1.5 text-xs leading-relaxed text-foreground-500">
-          {privacyNotice.map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-          <li className="pt-1">
-            ※ 개인정보 수집 및 이용에 동의하지 않을 권리가 있으며, 동의를 거부하실 경우 문의 접수 및
-            상담이 불가합니다.
-          </li>
-        </ul>
 
-        <label htmlFor="contact-consent" className="mt-4 flex items-start gap-3 cursor-pointer">
-          <input
-            id="contact-consent"
-            name="privacy_consent"
-            type="checkbox"
-            value="동의"
-            checked={consent}
-            onChange={(event) => {
-              setConsent(event.target.checked);
-              if (event.target.checked) setConsentError(false);
-            }}
-            style={{ accentColor: 'var(--cat)' }}
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border border-background-300 cursor-pointer"
-          />
-          <span className="text-sm text-foreground-700">
-            개인정보 수집 및 이용에 동의합니다. (필수)
-          </span>
-        </label>
+        <dl className="mt-3 space-y-1.5 text-xs leading-relaxed">
+          {consentRows.map((row) => (
+            <div key={row.label} className="flex flex-col gap-0.5 sm:flex-row sm:gap-2">
+              <dt className="ko shrink-0 text-foreground-500 sm:w-[104px]">{row.label}</dt>
+              <dd
+                className={
+                  row.emphasis
+                    ? 'ko font-semibold text-foreground-900 underline decoration-1 underline-offset-2'
+                    : 'ko text-foreground-700'
+                }
+              >
+                {row.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <p className="mt-3 text-xs leading-relaxed text-foreground-500">{consentEntrust}</p>
+        <p className="mt-2 text-xs leading-relaxed text-foreground-500">
+          <EmailText text={consentRefusal} />
+        </p>
+
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+          <label htmlFor="contact-consent" className="flex items-start gap-3 cursor-pointer">
+            <input
+              id="contact-consent"
+              name="privacy_consent"
+              type="checkbox"
+              value="동의"
+              checked={consent}
+              onChange={(event) => {
+                setConsent(event.target.checked);
+                if (event.target.checked) setConsentError(false);
+              }}
+              style={{ accentColor: 'var(--cat)' }}
+              className="mt-0.5 h-4 w-4 shrink-0 rounded border border-background-300 cursor-pointer"
+            />
+            <span className="ko text-sm text-foreground-700">{consentCheckboxLabel}</span>
+          </label>
+
+          <Link
+            to="/privacy"
+            className="ko text-xs text-foreground-600 underline underline-offset-2 whitespace-nowrap transition-colors hover:text-foreground-900"
+          >
+            {consentLinkLabel}
+          </Link>
+        </div>
 
         {consentError && (
-          <p className="mt-2 text-xs text-[color:var(--cat)]">
+          <p className="mt-2 text-xs text-accent-600">
             개인정보 수집 및 이용에 동의해 주세요.
           </p>
         )}
       </div>
 
-      <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-start gap-4">
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-primary-500 px-7 py-3.5 text-sm font-label text-background-50 whitespace-nowrap cursor-pointer transition-colors hover:bg-primary-600 disabled:opacity-60"
+          className="inline-flex items-center justify-center gap-2 rounded-md px-7 py-3.5 text-sm font-label text-foreground-950 whitespace-nowrap cursor-pointer transition-all hover:brightness-95 disabled:opacity-60"
+          style={{ backgroundColor: 'var(--cat)' }}
         >
           {status === 'submitting' ? '전송 중…' : '문의하기'}
           <i className="ri-send-plane-line w-4 h-4 flex items-center justify-center" />
         </button>
-        <p className="text-xs text-foreground-500">확인 후 최대한 빠르게 답변드리겠습니다.</p>
       </div>
 
       {status !== 'idle' && status !== 'submitting' && (

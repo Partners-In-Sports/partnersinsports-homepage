@@ -8,16 +8,20 @@ const uploadsBase = `${__BASE_PATH__.replace(/\/+$/, '')}/uploads/`;
 // Order (used wherever the colours appear as a sequence):
 // YELLOW → GREEN → RED → BLUE/CYAN (the footer stripe uses these four only)
 export const brandColors = {
-  yellow: '#F4C400',
-  green: '#00954B',
-  red: '#E4002B',
-  cyan: '#15A8E0',
-  ink: '#1C1B19',
+  yellow: '#FFF100',
+  green: '#00A550',
+  red: '#EC1B23',
+  cyan: '#00ADEE',
+  ink: '#221E1F',
 };
 
 // Readable "deep gold" — the same yellow family, darkened just enough to sit as
 // text or an icon on a light surface where the bright logo yellow would not read.
 export const brandYellowDeep = '#A87F00';
+
+// Readable "deep blue" — the same logo blue family, darkened just enough to
+// stay legible as small text or an icon on a light surface.
+export const brandCyanDeep = '#006E99';
 
 // Every top-level menu item carries one logo colour and now leads to its own
 // dedicated page. The colour stays quiet in a neutral resting state, then drives
@@ -26,7 +30,7 @@ export const navLinks = [
   { label: 'About', to: '/about', accent: brandColors.yellow },
   { label: 'Projects', to: '/projects', accent: brandColors.green },
   { label: 'Business', to: '/business', accent: brandColors.red },
-  { label: 'Contact', to: '/contact', accent: brandColors.ink },
+  { label: 'Contact', to: '/contact', accent: brandColors.cyan },
 ];
 
 // Section eyebrow labels reuse the colour of the menu item they belong to, so
@@ -36,7 +40,7 @@ export const sectionAccents = {
   featured: brandColors.green,
   about: brandColors.yellow,
   business: brandColors.red,
-  contact: brandColors.ink,
+  contact: brandColors.cyan,
 };
 
 // Text-safe variant of each section accent, used only where the accent colours
@@ -47,31 +51,31 @@ export const sectionAccentText = {
   featured: brandColors.green,
   about: brandYellowDeep,
   business: brandColors.red,
-  contact: brandColors.ink,
+  contact: brandCyanDeep,
 };
 
 // Soft tint of each section accent. Used for hover washes and icon bubbles so a
 // section can show its one brand colour at different strengths — never several
 // brand colours at once.
 export const sectionAccentSoft = {
-  work: 'rgba(0, 149, 75, 0.14)',
-  featured: 'rgba(0, 149, 75, 0.14)',
-  about: 'rgba(244, 196, 0, 0.18)',
-  business: 'rgba(228, 0, 43, 0.14)',
-  contact: 'rgba(28, 27, 25, 0.08)',
+  work: 'rgba(0, 165, 80, 0.14)',
+  featured: 'rgba(0, 165, 80, 0.14)',
+  about: 'rgba(255, 241, 0, 0.18)',
+  business: 'rgba(236, 27, 35, 0.14)',
+  contact: 'rgba(0, 173, 238, 0.14)',
 };
 
 // Registered company information — supplied by Partners in Sports and displayed
 // in Korean throughout the site. Nothing here is invented.
-// NOTE: street address and phone number are intentionally not kept here — the
-// company asked to keep them off the public site. Visitors reach the company
-// through the contact form instead.
+// NOTE: the office address is now published on the contact page (location card
+// + address row). The phone number is still intentionally not published.
 export const companyInfo = {
   name: '(주)파트너스인스포츠',
   nameEn: 'Partners in Sports',
   nameKo: '(주)파트너스인스포츠',
   tagline: 'Your Best Partner',
   ceo: '최원일',
+  address: '서울특별시 마포구 홍익로6길 18, 4층',
 };
 
 // How a visit is arranged. No street address is shown — the exact location is
@@ -180,7 +184,7 @@ export const workCategories = [
       '스포츠 분야 연구 프로젝트 수행, 데이터 분석 기반 전략 수립 및 인사이트 제공',
     points: ['스포츠 산업 연구', '마케팅 연구', '데이터 분석', '전략·인사이트'],
     accent: brandColors.yellow,
-    accentSoft: 'rgba(244, 196, 0, 0.18)',
+    accentSoft: 'rgba(255, 241, 0, 0.18)',
     image:
       `${uploadsBase}work-research.jpg`,
   },
@@ -195,7 +199,7 @@ export const workCategories = [
     description: '국내외 스포츠 이벤트 기획 및 운영',
     points: ['국내외 이벤트 기획', '이벤트 운영'],
     accent: brandColors.green,
-    accentSoft: 'rgba(0, 149, 75, 0.14)',
+    accentSoft: 'rgba(0, 165, 80, 0.14)',
     image:
       `${uploadsBase}work-events.jpg`,
   },
@@ -211,7 +215,7 @@ export const workCategories = [
       '해외 대학·기관과의 협력 및 교류 프로젝트 추진, 국제 공동 연구 및 교육 프로그램 운영',
     points: ['해외 대학·기관 협력', '교류 프로젝트', '국제 공동 연구', '교육 프로그램'],
     accent: brandColors.red,
-    accentSoft: 'rgba(228, 0, 43, 0.14)',
+    accentSoft: 'rgba(236, 27, 35, 0.14)',
     image:
       `${uploadsBase}work-global.jpg`,
   },
@@ -226,7 +230,7 @@ export const workCategories = [
     description: '브랜드/캐릭터 등 IP를 활용한 굿즈 기획·제작·판매',
     points: ['브랜드 IP', '캐릭터 IP', '굿즈 기획·제작', '판매'],
     accent: brandColors.cyan,
-    accentSoft: 'rgba(21, 168, 224, 0.14)',
+    accentSoft: 'rgba(0, 173, 238, 0.14)',
     image:
       `${uploadsBase}work-merch.jpg`,
   },

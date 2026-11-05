@@ -2,7 +2,6 @@ import { usePageMeta } from '@/hooks/usePageMeta';
 import Hero from './components/Hero';
 import WorkExplorer from './components/WorkExplorer';
 import AboutProjectsNav from './components/AboutProjectsNav';
-import CompanyContact from './components/CompanyContact';
 
 export default function Home() {
   usePageMeta({
@@ -17,7 +16,6 @@ export default function Home() {
       <Hero />
       <WorkExplorer />
       <AboutProjectsNav />
-      <CompanyContact />
     </>
   );
 }

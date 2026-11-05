@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import PageHero from '@/components/feature/PageHero';
 import Reveal from '@/components/base/Reveal';
-import { sectionAccentSoft, sectionAccents } from '@/mocks/site';
+import { sectionAccentSoft, sectionAccentText, sectionAccents } from '@/mocks/site';
 import ContactDetails from './components/ContactDetails';
 import ContactForm from './components/ContactForm';
 
@@ -27,7 +27,13 @@ export default function Contact() {
       <section
         id="contact"
         className="bg-background-100 border-t border-background-200"
-        style={{ '--cat': sectionAccents.contact, '--cat-soft': sectionAccentSoft.contact } as CSSProperties}
+        style={
+          {
+            '--cat': sectionAccents.contact,
+            '--cat-soft': sectionAccentSoft.contact,
+            '--cat-text': sectionAccentText.contact,
+          } as CSSProperties
+        }
       >
         <div className="px-4 md:px-8 py-12 md:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">

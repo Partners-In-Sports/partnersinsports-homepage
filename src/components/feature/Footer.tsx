@@ -3,14 +3,14 @@ import { brandColors, companyInfo, footerLegalLinks, navLinks, workCategories } 
 import { areaFilterHref } from '@/utils/projectLinks';
 import BrandMark from './BrandMark';
 
-// The four brand colours, always in the fixed sequence:
-// yellow → green → red → blue.
-// The logo's black is intentionally left out of the stripe; the logo itself is untouched.
+// The brand colours in their fixed sequence:
+// yellow → green → red → blue → black (the logo's ink colour closes the bar).
 const brandBar = [
   brandColors.yellow,
   brandColors.green,
   brandColors.red,
   brandColors.cyan,
+  brandColors.ink,
 ];
 
 export default function Footer() {
@@ -80,7 +80,7 @@ export default function Footer() {
               <li>대표자 : {companyInfo.ceo}</li>
               <li>
                 <Link to="/contact" className="hover:text-foreground-950 transition-colors cursor-pointer">
-                  방문·협업 문의 : 문의 양식으로 접수
+                  문의 : 문의 양식으로 접수
                 </Link>
               </li>
             </ul>
