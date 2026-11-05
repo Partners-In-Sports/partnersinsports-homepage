@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { usePageMeta } from '@/hooks/usePageMeta';
 import PageHero from '@/components/feature/PageHero';
 import Reveal from '@/components/base/Reveal';
 import { sectionAccentSoft, sectionAccents } from '@/mocks/site';
@@ -6,6 +7,13 @@ import ContactDetails from './components/ContactDetails';
 import ContactForm from './components/ContactForm';
 
 export default function Contact() {
+  usePageMeta({
+    title: '문의 | Partners in Sports',
+    description:
+      '프로젝트, 파트너십, 연구 관련 문의는 온라인 문의 양식으로 보내주세요. 확인 후 신속히 답변드리겠습니다.',
+    path: '/contact',
+  });
+
   return (
     <>
       <PageHero

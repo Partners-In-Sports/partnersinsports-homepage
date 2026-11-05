@@ -1,3 +1,4 @@
+import { usePageMeta } from '@/hooks/usePageMeta';
 import PageHero from '@/components/feature/PageHero';
 import CtaBand from '@/components/feature/CtaBand';
 import { projects } from '@/content/projects';
@@ -5,6 +6,13 @@ import { sectionAccents } from '@/mocks/site';
 import ProjectsListing from './components/ProjectsListing';
 
 export default function ProjectsIndex() {
+  usePageMeta({
+    title: '프로젝트 | Partners in Sports',
+    description:
+      '스포츠 산업 전반에 걸쳐 파트너스인스포츠가 수행한 프로젝트와 파트너십을 소개합니다.',
+    path: '/projects',
+  });
+
   return (
     <>
       <PageHero

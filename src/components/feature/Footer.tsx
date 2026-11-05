@@ -91,14 +91,12 @@ export default function Footer() {
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
             {footerLegalLinks.map((link) => (
               <li key={link.label}>
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={link.to}
                   className="text-xs text-foreground-600 hover:text-foreground-950 transition-colors cursor-pointer whitespace-nowrap"
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

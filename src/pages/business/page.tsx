@@ -1,3 +1,4 @@
+import { usePageMeta } from '@/hooks/usePageMeta';
 import PageHero from '@/components/feature/PageHero';
 import CtaBand from '@/components/feature/CtaBand';
 import { sectionAccents } from '@/mocks/site';
@@ -5,6 +6,13 @@ import BusinessAreas from './components/BusinessAreas';
 import BusinessApproach from './components/BusinessApproach';
 
 export default function Business() {
+  usePageMeta({
+    title: '사업영역 | Partners in Sports',
+    description:
+      '연구 프로젝트, 스포츠 이벤트 컨설팅, 글로벌 파트너십, 머천다이징까지 스포츠 프로젝트의 전 과정을 지원합니다.',
+    path: '/business',
+  });
+
   return (
     <>
       <PageHero

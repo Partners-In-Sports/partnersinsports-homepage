@@ -1,3 +1,4 @@
+import { usePageMeta } from '@/hooks/usePageMeta';
 import PageHero from '@/components/feature/PageHero';
 import CtaBand from '@/components/feature/CtaBand';
 import { sectionAccents, sectionAccentText } from '@/mocks/site';
@@ -5,6 +6,13 @@ import AboutIntro from './components/AboutIntro';
 import AboutPillars from './components/AboutPillars';
 
 export default function About() {
+  usePageMeta({
+    title: '회사소개 | Partners in Sports',
+    description:
+      '다양한 국제대회와 스포츠 현장 경험을 갖춘 스포츠인들이 설립한 회사로, 스포츠단체·기업·운동선수의 성공을 돕는 파트너입니다.',
+    path: '/about',
+  });
+
   return (
     <>
       <PageHero

@@ -102,12 +102,11 @@ export const visitGuide = {
   note: '방문은 사전 요청제로 운영되며, 상세 위치는 일정 확정 후 안내드립니다.',
 };
 
-// Footer legal navigation — links to the existing Partners in Sports website.
+// Footer legal navigation — all destinations live inside this site.
 export const footerLegalLinks = [
-  { label: '홈', href: 'https://partnersinsports.co.kr/main' },
-  { label: '회사소개', href: 'https://partnersinsports.co.kr/pages/about' },
-  { label: '이용약관', href: 'https://partnersinsports.co.kr/members/terms' },
-  { label: '개인정보처리방침', href: 'https://partnersinsports.co.kr/members/policy' },
+  { label: '홈', to: '/' },
+  { label: '회사소개', to: '/about' },
+  { label: '개인정보처리방침', to: '/privacy' },
 ];
 
 // Official logo artwork supplied by the client (vector, full colour — four-colour

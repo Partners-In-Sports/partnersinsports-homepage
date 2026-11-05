@@ -6,6 +6,7 @@ import ProjectsIndex from "@/pages/projects/page";
 import ProjectSlugRoute from "@/pages/projects/slug/page";
 import Business from "@/pages/business/page";
 import Contact from "@/pages/contact/page";
+import Privacy from "@/pages/privacy/page";
 import NotFound from "@/pages/NotFound";
 
 const routes: RouteObject[] = [
@@ -37,11 +38,16 @@ const routes: RouteObject[] = [
         path: "contact",
         element: <Contact />,
       },
+      {
+        path: "privacy",
+        element: <Privacy />,
+      },
+      // Unknown addresses keep the shared header and footer.
+      {
+        path: "*",
+        element: <NotFound />,
+      },
     ],
-  },
-  {
-    path: "*",
-    element: <NotFound />,
   },
 ];
 

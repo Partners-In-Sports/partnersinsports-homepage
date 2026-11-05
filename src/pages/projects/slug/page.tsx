@@ -1,4 +1,5 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
+import { usePageMeta } from '@/hooks/usePageMeta';
 import { workCategories } from '@/mocks/site';
 import { getProjectDetail } from '@/content/projects';
 import { areaFilterHref } from '@/utils/projectLinks';
@@ -14,11 +15,20 @@ export default function ProjectSlugRoute() {
   const { slug } = useParams();
   const detail = getProjectDetail(slug);
 
+  const category = workCategories.find((item) => item.slug === slug);
+
+  usePageMeta({
+    title: detail ? `${detail.title} | Partners in Sports` : '페이지를 찾을 수 없습니다 | Partners in Sports',
+    description: detail
+      ? `${detail.title} · ${detail.label} 프로젝트의 개요와 주요 업무, 갤러리를 소개합니다.`
+      : '요청하신 페이지를 찾을 수 없습니다. 주소를 다시 확인해 주세요.',
+    path: detail ? `/projects/${detail.slug}` : undefined,
+    noindex: !detail,
+  });
+
   if (detail) {
     return <ProjectDetail data={detail} />;
   }
-
-  const category = workCategories.find((item) => item.slug === slug);
 
   if (category) {
     return <Navigate to={areaFilterHref(category.id)} replace />;
