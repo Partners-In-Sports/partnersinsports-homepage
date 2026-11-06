@@ -6,10 +6,9 @@ backend:
   repo: Partners-In-Sports/partnersinsports-homepage
   branch: main
   # ── 인증 서버(OAuth) ────────────────────────────────────────────────
-  # 아직 인증 서버가 없습니다. OAuth 프록시를 준비한 뒤 아래 두 줄의 주석을
-  # 풀고 실제 주소를 넣어 주세요. (예: Netlify Function, Cloudflare Worker)
+  # 관리 화면 GitHub 로그인용 주소입니다. 이 두 줄은 그대로 유지해 주세요.
   base_url: https://pis-cms-auth.ceo-2cd.workers.dev
-  # auth_endpoint: auth
+  auth_endpoint: auth
   # ────────────────────────────────────────────────────────────────
 
 # 편집한 내용을 바로 main 브랜치에 커밋합니다.
@@ -50,13 +49,13 @@ collections:
     fields:
       - label: "프로젝트명"
         name: "title"
-        widget: "string"
-        hint: "카드와 상세 페이지 제목으로 표시됩니다."
+        widget: "placeholder-string"
+        placeholder: "예) 2026 ○○ 국제대회 운영"
 
       - label: "slug (주소)"
         name: "slug"
-        widget: "string"
-        hint: "영문 소문자와 하이픈만 사용하세요. 예: pis-swimming-2026 → /projects/pis-swimming-2026"
+        widget: "placeholder-string"
+        placeholder: "예) 2026-korea-open"
 
       - label: "분야"
         name: "category"
@@ -69,9 +68,9 @@ collections:
 
       - label: "카드에 표시할 분야명"
         name: "cardLabel"
-        widget: "string"
+        widget: "placeholder-string"
         required: false
-        hint: "비워두면 분야 이름이 그대로 사용됩니다."
+        placeholder: "예) Sporting Events · 스포츠 이벤트"
 
       - label: "카드 종류"
         name: "cardType"
@@ -103,16 +102,16 @@ collections:
 
       - label: "카드 이미지 위치 (object-position)"
         name: "cardImagePosition"
-        widget: "string"
+        widget: "placeholder-string"
         required: false
         default: "center top"
-        hint: "예: center top, center, center 70%"
+        placeholder: "예) center top · center 70%"
 
       - label: "카드 이미지 대체 텍스트"
         name: "cardImageAlt"
-        widget: "string"
+        widget: "placeholder-string"
         required: false
-        hint: "비워두면 프로젝트명이 사용됩니다."
+        placeholder: "예) 대회 공식 포스터"
 
       - label: "카드 오른쪽 위에 화살표 배지 표시"
         name: "badgeCorner"
@@ -122,10 +121,10 @@ collections:
 
       - label: "상세 라벨"
         name: "label"
-        widget: "string"
+        widget: "placeholder-string"
         required: false
         default: "Research Projects · 연구 프로젝트"
-        hint: "상세 페이지 제목 위에 표시되는 영문·국문 라벨입니다."
+        placeholder: "예) Sporting Events · 스포츠 이벤트"
 
       - label: "상세 로고 이미지"
         name: "logoImage"
@@ -134,8 +133,9 @@ collections:
 
       - label: "상세 로고 대체 텍스트"
         name: "logoAlt"
-        widget: "string"
+        widget: "placeholder-string"
         required: false
+        placeholder: "예) ○○대회 공식 로고"
 
       - label: "상세 포스터 이미지 (갤러리가 없을 때 사용)"
         name: "posterImage"
@@ -144,8 +144,9 @@ collections:
 
       - label: "상세 포스터 대체 텍스트"
         name: "posterAlt"
-        widget: "string"
+        widget: "placeholder-string"
         required: false
+        placeholder: "예) 대회 포스터 이미지"
 
       - label: "갤러리 이미지 목록"
         name: "gallery"

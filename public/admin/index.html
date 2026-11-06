@@ -15,7 +15,306 @@
       - 프로젝트 데이터: src/content/projects/*.json
       - 업로드 이미지: public/uploads (사이트에서는 __BASE_PATH__ + /uploads/ 경로로 사용)
       설정 파일: public/admin/config.yml
+
+      이 파일에서 함께 등록하는 것
+      1) "projects" 컬렉션 미리보기 — 실제 목록 카드(A형·B형)와 상세 페이지 모양
+      2) 미리보기 전용 스타일 — 사이트와 같은 폰트·브랜드 컬러
+      3) placeholder-string 위젯 — 입력칸 안에 회색 예시 문구 표시
     -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <script>
+      (function () {
+        var CMS = window.CMS;
+        if (!CMS) return;
+
+        var h = window.h;
+        var createClass = window.createClass || window.createReactClass;
+        if (!h || !createClass) return;
+
+        /* -------------------------------------------------------------------
+           1. 공통 값 — 사이트(src/content/projects/index.ts)과 같은 규칙
+           ------------------------------------------------------------------- */
+        var CATEGORY_LABELS = {
+          research: 'Research Projects',
+          events: 'Sporting Events',
+          global: 'Global Partnerships',
+          merchandising: 'Merchandising',
+        };
+
+        var DETAIL_LABELS = {
+          research: 'Research Projects · 연구 프로젝트',
+          events: 'Sporting Events · 스포츠 이벤트',
+          global: 'Global Partnerships · 글로벌 파트너십',
+          merchandising: 'Merchandising · 머천다이징',
+        };
+
+        function plain(value) {
+          if (!value) return null;
+          if (typeof value.toJS === 'function') return value.toJS();
+          return value;
+        }
+
+        function getData(entry) {
+          if (!entry || typeof entry.get !== 'function') return {};
+          return plain(entry.get('data')) || {};
+        }
+
+        function text(value) {
+          if (value === null || value === undefined) return '';
+          return String(value).trim();
+        }
+
+        function assetUrl(props, path) {
+          var value = text(path);
+          if (!value) return '';
+          try {
+            var file = props.getAsset ? props.getAsset(value) : null;
+            var url = file ? file.toString() : '';
+            if (url) return url;
+          } catch (error) {
+            /* 미리보기 파일을 아직 찾지 못하면 원래 경로를 그대로 사용합니다. */
+          }
+          return value;
+        }
+
+        /* -------------------------------------------------------------------
+           2. 프로젝트 미리보기 — 실제 ProjectCard / ProjectDetail 배치를 옮김
+           ------------------------------------------------------------------- */
+        var ProjectsPreview = createClass({
+          render: function () {
+            var props = this.props;
+            var data = getData(props.entry);
+
+            var category = text(data.category);
+            var cardType = text(data.cardType) || 'A';
+            var isA = cardType !== 'B';
+
+            var title = text(data.title);
+            var displayTitle = title || '프로젝트명을 입력하면 여기에 표시됩니다';
+            var cardLabel = text(data.cardLabel) || CATEGORY_LABELS[category] || 'Project';
+            var detailLabel = text(data.label) || DETAIL_LABELS[category] || 'Project';
+
+            var fit = text(data.cardImageFit) === 'contain' ? 'contain' : 'cover';
+            var position = text(data.cardImagePosition) || 'center top';
+            var badgeCorner = Boolean(data.badgeCorner) && isA;
+
+            var cardImage = assetUrl(props, data.cardImage);
+            var cardAlt = text(data.cardImageAlt) || displayTitle;
+
+            var media = [];
+            if (cardImage) {
+              media.push(
+                h('img', {
+                  key: 'image',
+                  src: cardImage,
+                  alt: cardAlt,
+                  style: fit === 'cover' ? { objectPosition: position } : undefined,
+                })
+              );
+            } else {
+              media.push(h('span', { key: 'empty', className: 'pis-card__empty' }, '카드 이미지 없음'));
+            }
+            if (badgeCorner) {
+              media.push(h('span', { key: 'badge', className: 'pis-card__badge' }, '↗'));
+            }
+
+            var card = h('div', { className: 'pis-card' }, [
+              h(
+                'div',
+                {
+                  key: 'media',
+                  className:
+                    fit === 'contain'
+                      ? 'pis-card__media pis-card__media--logo'
+                      : 'pis-card__media',
+                },
+                media
+              ),
+              h('div', { key: 'body', className: 'pis-card__body' }, [
+                h('span', { key: 'cat', className: 'pis-card__cat' }, cardLabel),
+                h('h3', { key: 'title', className: 'pis-card__title' }, displayTitle),
+                h(
+                  'div',
+                  { key: 'foot', className: 'pis-card__foot' },
+                  isA ? h('span', { className: 'pis-card__arrow' }, '↗') : null
+                ),
+              ]),
+            ]);
+
+            /* 상세 페이지 ------------------------------------------------- */
+            var gallery = Array.isArray(data.gallery) ? data.gallery : [];
+            var firstGalleryImage = '';
+            if (gallery.length && gallery[0] && gallery[0].image) {
+              firstGalleryImage = gallery[0].image;
+            }
+            var detailMediaRaw = text(data.posterImage) || firstGalleryImage;
+            var detailMedia = assetUrl(props, detailMediaRaw);
+
+            var overviewTitle = text(data.overviewTitle) || '대회 개요';
+            var overview = Array.isArray(data.overview) ? data.overview : [];
+            var rows = overview.filter(function (row) {
+              return row && (text(row.label) || text(row.value));
+            });
+
+            var tasksTitle = text(data.tasksTitle) || '주요 업무';
+            var tasks = (Array.isArray(data.tasks) ? data.tasks : []).filter(function (task) {
+              return text(task);
+            });
+
+            var contactLabel = text(data.contactLabel) || '문의하기';
+
+            var logoUrl = assetUrl(props, data.logoImage);
+            var logoAlt = text(data.logoAlt) || displayTitle + ' 로고';
+
+            var detail = h('section', { className: 'pis-detail' }, [
+              h('div', { key: 'cap', className: 'pis-caption' }, [
+                h('span', { key: 'rule' }),
+                '상세 페이지',
+              ]),
+              h('span', { key: 'eyebrow', className: 'pis-detail__eyebrow' }, [
+                h('i', { key: 'rule' }),
+                h('span', { key: 'txt' }, detailLabel),
+              ]),
+              logoUrl
+                ? h('img', { key: 'logo', className: 'pis-detail__logo', src: logoUrl, alt: logoAlt })
+                : null,
+              h('p', { key: 'title', className: 'pis-detail__title' }, displayTitle),
+              detailMedia
+                ? h(
+                    'div',
+                    { key: 'media', className: 'pis-detail__media' },
+                    h('img', { src: detailMedia, alt: displayTitle })
+                  )
+                : null,
+              rows.length
+                ? h('div', { key: 'overview', className: 'pis-detail__block' }, [
+                    h('p', { key: 'h', className: 'pis-detail__h' }, overviewTitle),
+                    h(
+                      'dl',
+                      { key: 'dl', className: 'pis-dl' },
+                      rows.map(function (row, index) {
+                        return h('div', { key: 'row-' + index, className: 'pis-row' }, [
+                          h('dt', { key: 'dt' }, text(row.label)),
+                          h('dd', { key: 'dd' }, text(row.value)),
+                        ]);
+                      })
+                    ),
+                  ])
+                : null,
+              h('div', { key: 'tasks', className: 'pis-detail__block' }, [
+                h('p', { key: 'h', className: 'pis-detail__h' }, tasksTitle),
+                tasks.length
+                  ? h(
+                      'ul',
+                      { key: 'ul', className: 'pis-tasks' },
+                      tasks.map(function (task, index) {
+                        return h('li', { key: 'task-' + index }, [
+                          h('span', { key: 'dot', className: 'pis-dot' }),
+                          h('span', { key: 'txt' }, text(task)),
+                        ]);
+                      })
+                    )
+                  : h('p', { key: 'empty', className: 'pis-empty' }, '업무를 입력하면 이곳에 표시됩니다.'),
+              ]),
+              h('span', { key: 'cta', className: 'pis-cta' }, [
+                h('span', { key: 'txt' }, contactLabel),
+                '→',
+              ]),
+            ]);
+
+            return h('div', { className: 'pis-preview' }, [
+              h('div', { key: 'card-cap', className: 'pis-caption' }, [
+                h('span', { key: 'rule' }),
+                isA ? '목록 카드 · A형 (클릭 가능)' : '목록 카드 · B형 (로고만 표시)',
+              ]),
+              card,
+              isA
+                ? detail
+                : h(
+                    'div',
+                    { key: 'note', className: 'pis-note' },
+                    'B형은 상세 페이지가 없는 로고 카드입니다. 상세 페이지가 필요하면 카드 종류를 A형으로 바꿔 주세요.'
+                  ),
+            ]);
+          },
+        });
+
+        CMS.registerPreviewTemplate('projects', ProjectsPreview);
+
+        /* -------------------------------------------------------------------
+           3. 미리보기 전용 스타일 — 사이트와 같은 폰트와 브랜드 컬러
+           ------------------------------------------------------------------- */
+        var PREVIEW_CSS = [
+          "@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');",
+          '.pis-preview{font-family:Inter,sans-serif;background:#f5f3ef;color:#221e1f;padding:18px;word-break:keep-all;overflow-wrap:break-word;}',
+          '.pis-preview *{box-sizing:border-box;}',
+          '.pis-caption{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-family:Archivo,Inter,sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8a857d;}',
+          '.pis-caption>span{display:block;width:18px;height:1px;background:#00a550;flex:0 0 auto;}',
+          '.pis-card{max-width:360px;display:flex;flex-direction:column;background:#fff;border:1px solid #e7e3dd;border-radius:8px;overflow:hidden;}',
+          '.pis-card__media{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#ecebe7;}',
+          '.pis-card__media img{display:block;width:100%;height:100%;object-fit:cover;}',
+          '.pis-card__media--logo{display:flex;align-items:center;justify-content:center;background:#fff;}',
+          '.pis-card__media--logo img{width:auto;height:auto;max-width:70%;max-height:70%;object-fit:contain;}',
+          '.pis-card__empty{display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-family:Archivo,Inter,sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#a8a29a;}',
+          '.pis-card__badge{position:absolute;top:12px;right:12px;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid rgba(253,252,251,.3);border-radius:999px;background:rgba(34,30,31,.72);color:#fdfcfb;font-size:13px;line-height:1;}',
+          '.pis-card__body{display:flex;flex:1;flex-direction:column;padding:16px;}',
+          '.pis-card__cat{font-family:Archivo,Inter,sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#6d6a64;}',
+          '.pis-card__title{margin:8px 0 0;font-family:Archivo,Inter,sans-serif;font-size:16px;font-weight:700;line-height:1.35;letter-spacing:-.01em;color:#221e1f;}',
+          '.pis-card__foot{display:flex;justify-content:flex-end;margin-top:auto;padding-top:18px;}',
+          '.pis-card__arrow{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid #dcd8d2;border-radius:999px;color:#4b4741;font-size:13px;line-height:1;}',
+          '.pis-detail{margin-top:24px;padding-top:20px;border-top:1px dashed #dcd8d2;}',
+          '.pis-detail__eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:Archivo,Inter,sans-serif;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#6d6a64;}',
+          '.pis-detail__eyebrow i{display:block;width:20px;height:1px;background:#00a550;flex:0 0 auto;}',
+          '.pis-detail__logo{display:block;margin-top:14px;max-width:140px;max-height:36px;object-fit:contain;}',
+          '.pis-detail__title{margin:10px 0 0;font-family:Archivo,Inter,sans-serif;font-size:20px;font-weight:700;line-height:1.3;letter-spacing:-.01em;color:#221e1f;}',
+          '.pis-detail__media{margin-top:14px;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:6px;background:#ecebe7;}',
+          '.pis-detail__media img{display:block;width:100%;height:100%;object-fit:cover;}',
+          '.pis-detail__block{margin-top:18px;padding-top:12px;border-top:1px solid #e7e3dd;}',
+          '.pis-detail__h{margin:0;font-family:Archivo,Inter,sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6d6a64;}',
+          '.pis-dl{margin:8px 0 0;}',
+          '.pis-row{display:grid;grid-template-columns:104px 1fr;gap:0 12px;margin-top:8px;}',
+          '.pis-row dt{font-size:12px;line-height:1.6;color:#6d6a64;}',
+          '.pis-row dd{margin:0;font-size:13px;line-height:1.6;color:#302c28;}',
+          '.pis-tasks{display:flex;flex-direction:column;gap:7px;margin:10px 0 0;padding:0;list-style:none;}',
+          '.pis-tasks li{display:flex;gap:9px;font-size:13px;line-height:1.6;color:#302c28;}',
+          '.pis-dot{flex:0 0 auto;width:5px;height:5px;margin-top:8px;border-radius:999px;background:#00a550;}',
+          '.pis-empty{margin:10px 0 0;font-size:12px;line-height:1.6;color:#a8a29a;}',
+          '.pis-cta{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:10px 18px;border-radius:6px;background:#221e1f;color:#fdfcfb;font-family:Archivo,Inter,sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;}',
+          '.pis-note{margin-top:22px;padding:12px 14px;border:1px dashed #dcd8d2;border-radius:6px;background:#faf9f7;font-size:12px;line-height:1.7;color:#6d6a64;}',
+        ].join('\n');
+
+        CMS.registerPreviewStyle(PREVIEW_CSS, { raw: true });
+
+        /* -------------------------------------------------------------------
+           4. placeholder-string 위젯 — 입력칸 안에 회색 예시 문구를 표시합니다.
+              (Decap CMS의 기본 string 위젯은 placeholder를 지원하지 않습니다.)
+           ------------------------------------------------------------------- */
+        var PlaceholderControl = createClass({
+          handleChange: function (event) {
+            this.props.onChange(event.target.value);
+          },
+          render: function () {
+            var field = this.props.field;
+            var placeholder = field && field.get ? field.get('placeholder') || '' : '';
+
+            return h('input', {
+              id: this.props.forID,
+              className: this.props.classNameWrapper,
+              type: 'text',
+              value: this.props.value || '',
+              placeholder: placeholder,
+              autoComplete: 'off',
+              onChange: this.handleChange,
+            });
+          },
+        });
+
+        var PlaceholderPreview = function (props) {
+          return h('span', null, props.value || '');
+        };
+
+        CMS.registerWidget('placeholder-string', PlaceholderControl, PlaceholderPreview);
+      })();
+    </script>
   </body>
 </html>
