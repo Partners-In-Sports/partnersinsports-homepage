@@ -6,7 +6,560 @@
     <!-- 관리 화면은 검색에 노출되지 않습니다. -->
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>프로젝트 관리 | Partners in Sports</title>
+    <!-- 탭 아이콘 — 사이트와 같은 브랜드 핀휠 심볼 -->
+    <link rel="icon" type="image/svg+xml" sizes="any" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2092%2092%22%3E%3Cpolygon%20points%3D%2286.86%2072.25%2039.19%2061%2091.57%2053.15%2086.86%2072.25%22%20fill%3D%22%2300a550%22%2F%3E%3Cpolygon%20points%3D%2234.46%2091.01%2030.43%2042.19%2054.09%2089.58%2034.46%2091.01%22%20fill%3D%22%23ec1b23%22%2F%3E%3Cpolygon%20points%3D%22.43%2046.97%2045.61%2028.05%207.85%2065.19%20.43%2046.97%22%20fill%3D%22%2300adee%22%2F%3E%3Cpolygon%20points%3D%2285.22%2016.62%2068.5%206.24%2063.27%2037.56%2063.75%2038.12%2063.23%2037.84%2059.78%2058.48%2085.22%2016.62%22%20fill%3D%22%23fff100%22%2F%3E%3Cpolygon%20points%3D%2231.8%20.99%2016.76%2013.68%2063.23%2037.84%2063.27%2037.56%22%2F%3E%3Cpolygon%20points%3D%2263.27%2037.56%2063.23%2037.84%2063.75%2038.12%2063.27%2037.56%22%20fill%3D%22%23fff100%22%2F%3E%3C%2Fsvg%3E" />
+    <title>파트너스인스포츠 관리</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <style id="pis-admin-theme">
+      /* ===================================================================
+         관리 화면 테마 — 회사 사이트와 같은 폰트·색·모서리·그림자
+         (Decap CMS 구조와 동작은 그대로 두고 겉모습만 맞춥니다.)
+         =================================================================== */
+      :root {
+        --pis-ink: #221e1f;
+        --pis-green: #00a550;
+        --pis-green-deep: #008b43;
+        --pis-green-soft: rgba(0, 165, 80, 0.08);
+        --pis-canvas: #f6f4ef;
+        /* 사이트 헤더와 같은 바탕(가장 밝은 배경)과 구분선 */
+        --pis-header-bg: #fdfdfc;
+        --pis-header-line: #f0eee8;
+        --pis-surface: #ffffff;
+        --pis-surface-soft: #fbfaf7;
+        --pis-line: #e7e3dd;
+        --pis-line-strong: #d7d2cb;
+        --pis-text: #302c28;
+        --pis-muted: #6d6a64;
+        --pis-quiet: #8a857d;
+        --pis-radius: 8px;
+        --pis-shadow: 0 1px 2px rgba(34, 30, 31, 0.05);
+        --pis-font: 'Inter', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR',
+          sans-serif;
+        --pis-font-heading: 'Archivo', 'Inter', 'Apple SD Gothic Neo', 'Malgun Gothic',
+          sans-serif;
+      }
+
+      html,
+      body,
+      #root {
+        background-color: var(--pis-canvas) !important;
+      }
+
+      body {
+        color: var(--pis-ink) !important;
+        font-family: var(--pis-font) !important;
+        word-break: keep-all;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      [class$="-CollectionTopHeading"] {
+        font-family: var(--pis-font-heading) !important;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      /* ── 상단 바 (사이트 헤더 기준) ────────────────────────────────
+         사이트 헤더: 높이 68~76px · 밝은 뉴트럴 바탕 · 하단 얇은 구분선
+         · 왼쪽 로고(높이 36~40px) · 메뉴는 작은 대문자 라벨
+         ───────────────────────────────────────────────────────────── */
+      [class*="AppHeader"] {
+        background: var(--pis-header-bg) !important;
+        border-bottom: 1px solid var(--pis-header-line) !important;
+        box-shadow: none !important;
+        min-height: 68px !important;
+        padding: 0 16px !important;
+      }
+
+      @media (min-width: 768px) {
+        [class*="AppHeader"] {
+          min-height: 76px !important;
+          padding: 0 32px !important;
+        }
+      }
+
+      /* 로고 — 사이트 BrandMark와 같은 높이, 너비는 원래 비율을 따릅니다. */
+      [class*="AppHeader"] img {
+        display: block !important;
+        height: 36px !important;
+        width: auto !important;
+        max-width: 200px !important;
+        object-fit: contain !important;
+      }
+
+      @media (min-width: 768px) {
+        [class*="AppHeader"] img {
+          height: 40px !important;
+        }
+      }
+
+      [class*="AppHeader"] a,
+      [class*="AppHeader"] button,
+      [class*="AppHeader"] span,
+      [class*="AppHeader"] h1,
+      [class*="AppHeader"] div {
+        color: var(--pis-ink) !important;
+        font-family: var(--pis-font-heading) !important;
+      }
+
+      /* 메뉴 글자 — 사이트 상단 메뉴와 같은 작은 대문자 라벨 */
+      [class*="AppHeader"] a {
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.16em !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+      }
+
+      [class*="AppHeader"] a:hover,
+      [class*="AppHeader"] button:hover {
+        color: var(--pis-green) !important;
+      }
+
+      /* 오른쪽 버튼(빠른 추가 · 계정) — 사이트의 보조 버튼 모양 */
+      [class*="AppHeader"] button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        padding: 0 12px !important;
+        background: transparent !important;
+        border: 1px solid var(--pis-line-strong) !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.12em !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      }
+
+      [class*="AppHeader"] button:hover {
+        background: var(--pis-green-soft) !important;
+        border-color: var(--pis-green) !important;
+        color: var(--pis-green) !important;
+      }
+
+      [class*="AppHeader"] button svg {
+        color: currentColor !important;
+      }
+
+      /* ── 왼쪽 컬렉션 메뉴 ─────────────────────────────────────────── */
+      aside[class*="Sidebar"],
+      [class*="SidebarContainer"] {
+        background: var(--pis-surface) !important;
+        border: 1px solid var(--pis-line) !important;
+        border-radius: 10px !important;
+        box-shadow: none !important;
+      }
+
+      [class$="-SidebarHeading"] {
+        font-family: var(--pis-font-heading) !important;
+        font-size: 10px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.18em !important;
+        text-transform: uppercase !important;
+        color: var(--pis-quiet) !important;
+      }
+
+      [class*="SidebarNavLink"] {
+        margin: 2px 8px !important;
+        padding: 9px 12px !important;
+        border-left: 2px solid transparent !important;
+        border-radius: 6px !important;
+        font-family: var(--pis-font-heading) !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.02em !important;
+        color: var(--pis-text) !important;
+        transition: background-color 0.2s ease, color 0.2s ease;
+      }
+
+      [class*="SidebarNavLink"]:hover {
+        background: var(--pis-green-soft) !important;
+        border-left-color: var(--pis-green) !important;
+        color: var(--pis-ink) !important;
+      }
+
+      [class*="SidebarNavLink"].sidebar-active {
+        background: var(--pis-green-soft) !important;
+        border-left-color: var(--pis-green) !important;
+        color: var(--pis-green) !important;
+        font-weight: 600 !important;
+      }
+
+      [class*="SidebarNavLink"] svg {
+        color: currentColor !important;
+      }
+
+      /* ── 목록 상단(제목·설명·+ 프로젝트) ───────────────────────────── */
+      [class*="CollectionTopContainer"] {
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+      }
+
+      [class$="-CollectionTopHeading"] {
+        font-size: 22px !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.01em !important;
+        color: var(--pis-ink) !important;
+      }
+
+      [class$="-CollectionTopDescription"] {
+        font-family: var(--pis-font) !important;
+        font-size: 12.5px !important;
+        line-height: 1.7 !important;
+        color: var(--pis-muted) !important;
+      }
+
+      [class$="-CollectionTopNewButton"] {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: var(--pis-ink) !important;
+        border: 1px solid var(--pis-ink) !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+        color: var(--pis-surface) !important;
+        font-family: var(--pis-font-heading) !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.12em !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+      }
+
+      [class$="-CollectionTopNewButton"]:hover {
+        background: var(--pis-green) !important;
+        border-color: var(--pis-green) !important;
+        color: var(--pis-surface) !important;
+      }
+
+      /* ── 목록 카드 ───────────────────────────────────────────────── */
+      /* 목록 보기 방식 버튼(카드/리스트) — 작은 사각 버튼으로 정리 */
+      [class*="ViewControlsSection"] {
+        gap: 6px !important;
+      }
+
+      [class*="ViewControlsButton"] {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 32px !important;
+        height: 32px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: var(--pis-surface) !important;
+        border: 1px solid var(--pis-line) !important;
+        border-radius: 6px !important;
+        color: var(--pis-quiet) !important;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      }
+
+      [class*="ViewControlsButton"]:hover {
+        border-color: var(--pis-green) !important;
+        color: var(--pis-green) !important;
+      }
+
+      [class*="ViewControlsButton"] svg {
+        width: 16px !important;
+        height: 16px !important;
+        color: currentColor !important;
+      }
+
+      [class$="-CardsGrid"] {
+        margin-left: 0 !important;
+        gap: 16px !important;
+        align-items: stretch !important;
+      }
+
+      li[class$="-ListCard"],
+      li[class$="-GridCard"] {
+        background: var(--pis-surface) !important;
+        border: 1px solid var(--pis-line) !important;
+        border-radius: var(--pis-radius) !important;
+        box-shadow: var(--pis-shadow) !important;
+        margin-left: 0 !important;
+        margin-bottom: 0 !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      li[class$="-ListCard"]:hover,
+      li[class$="-GridCard"]:hover {
+        border-color: var(--pis-line-strong) !important;
+        box-shadow: 0 2px 10px rgba(34, 30, 31, 0.07) !important;
+      }
+
+      [class$="-ListCardLink"]:hover,
+      [class$="-GridCardLink"]:hover {
+        background: var(--pis-surface-soft) !important;
+      }
+
+      [class$="-ListCardTitle"],
+      [class$="-CardHeading"] {
+        font-family: var(--pis-font-heading) !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        letter-spacing: -0.005em !important;
+        color: var(--pis-ink) !important;
+      }
+
+      [class$="-CollectionLabel"] {
+        font-family: var(--pis-font-heading) !important;
+        font-size: 10px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.16em !important;
+        text-transform: uppercase !important;
+        color: var(--pis-quiet) !important;
+      }
+
+      /* 카드(그리드) 보기 — 사이트 프로젝트 카드와 같은 비율·모서리 */
+      li[class$="-GridCard"] {
+        flex: 0 0 300px !important;
+        width: 300px !important;
+        height: 268px !important;
+        max-width: 100% !important;
+        border-radius: var(--pis-radius) !important;
+      }
+
+      [class$="-CardBody"] {
+        padding: 16px 18px !important;
+      }
+
+      [class$="-GridCard"] [data-testid="entry-card-image"] {
+        height: 156px !important;
+        border-top: 1px solid var(--pis-line) !important;
+        border-bottom: 0 !important;
+      }
+
+      [data-testid="entry-card-image"] {
+        border-top: 1px solid var(--pis-line);
+        border-bottom: 1px solid var(--pis-line);
+        background-color: var(--pis-surface-soft) !important;
+      }
+
+      /* ── 편집 화면 ───────────────────────────────────────────────── */
+      [class$="-ToolbarContainer"] {
+        background: var(--pis-surface) !important;
+        border-bottom: 1px solid var(--pis-line) !important;
+        box-shadow: none !important;
+      }
+
+      [class$="-BackCollection"],
+      [class$="-BackArrow"] {
+        color: var(--pis-ink) !important;
+        font-family: var(--pis-font-heading) !important;
+      }
+
+      [class$="-ToolbarSectionBackLink"] {
+        background: transparent !important;
+        border-right-color: var(--pis-line) !important;
+      }
+
+      [class$="-ToolbarSectionBackLink"]:hover,
+      [class$="-ToolbarSectionBackLink"]:focus {
+        background: var(--pis-green-soft) !important;
+      }
+
+      [class*="ControlPane"],
+      [class*="PreviewPane"] {
+        background: var(--pis-surface) !important;
+      }
+
+      /* ── 라벨 · 설명 ─────────────────────────────────────────────── */
+      [class$="-FieldLabel"] {
+        font-family: var(--pis-font-heading) !important;
+        font-size: 10.5px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.12em !important;
+        text-transform: uppercase !important;
+        color: var(--pis-muted) !important;
+      }
+
+      /* Decap이 필수가 아닌 칸에 자동으로 붙이는 "(선택사항)" 표시는 감춥니다.
+         필수 여부 설정은 그대로 두고 화면에만 보이지 않게 합니다. */
+      label > span:not([class]) {
+        display: none !important;
+      }
+
+      [class$="-ControlHint"] {
+        font-family: var(--pis-font) !important;
+        font-size: 11.5px !important;
+        line-height: 1.6 !important;
+        color: var(--pis-quiet) !important;
+      }
+
+      [class$="-ControlHint"] a,
+      [class*="ControlPane"] a {
+        color: var(--pis-green) !important;
+      }
+
+      /* ── 입력칸 ─────────────────────────────────────────────────── */
+      input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+      textarea,
+      select {
+        background-color: var(--pis-surface) !important;
+        border: 1px solid var(--pis-line) !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+        color: var(--pis-ink) !important;
+        font-family: var(--pis-font) !important;
+        font-size: 14px !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+      textarea:focus,
+      select:focus {
+        border-color: var(--pis-green) !important;
+        box-shadow: 0 0 0 3px rgba(0, 165, 80, 0.12) !important;
+        outline: none !important;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: var(--pis-quiet) !important;
+        font-family: var(--pis-font) !important;
+      }
+
+      input[type="checkbox"],
+      input[type="radio"] {
+        accent-color: var(--pis-green);
+      }
+
+      /* ── 버튼 ───────────────────────────────────────────────────── */
+      [class*="PublishButton"],
+      [class*="PublishedButton"],
+      [class*="StatusButton"] {
+        background: var(--pis-green) !important;
+        border: 1px solid var(--pis-green) !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+        color: var(--pis-surface) !important;
+        font-family: var(--pis-font-heading) !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.12em !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+      }
+
+      [class*="PublishButton"]:hover,
+      [class*="StatusButton"]:hover {
+        background: var(--pis-green-deep) !important;
+        border-color: var(--pis-green-deep) !important;
+      }
+
+      [class*="SaveButton"] {
+        background: var(--pis-ink) !important;
+        border: 1px solid var(--pis-ink) !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+        color: var(--pis-surface) !important;
+        font-family: var(--pis-font-heading) !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.12em !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+      }
+
+      [class*="SaveButton"]:hover:not([disabled]) {
+        background: var(--pis-green) !important;
+        border-color: var(--pis-green) !important;
+      }
+
+      [class*="SaveButton"][disabled] {
+        opacity: 0.45 !important;
+      }
+
+      [class*="DeleteButton"] {
+        background: transparent !important;
+        border: 1px solid var(--pis-line) !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+        color: var(--pis-muted) !important;
+        font-family: var(--pis-font-heading) !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.08em !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+      }
+
+      [class*="DeleteButton"]:hover {
+        background: #fdf6f5 !important;
+        border-color: #e7bdb8 !important;
+        color: #b3261e !important;
+      }
+
+      [class*="DropdownItem"]:hover {
+        background: var(--pis-green-soft) !important;
+        color: var(--pis-green) !important;
+      }
+
+      /* ── 로그인 화면 ─────────────────────────────────────────────── */
+      [class*="AuthenticationPage"] {
+        background: var(--pis-canvas) !important;
+      }
+
+      /* 로그인 화면 로고 — 사이트 로고를 작게 */
+      [class*="AuthenticationPage"] img {
+        display: block !important;
+        height: 40px !important;
+        width: auto !important;
+        max-width: 220px !important;
+        margin: 0 auto 8px !important;
+        object-fit: contain !important;
+      }
+
+      [class*="AuthenticationPage"] button {
+        background: var(--pis-ink) !important;
+        border: 1px solid var(--pis-ink) !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+        color: var(--pis-surface) !important;
+        font-family: var(--pis-font-heading) !important;
+        white-space: nowrap !important;
+      }
+
+      [class*="AuthenticationPage"] button:hover {
+        background: var(--pis-green) !important;
+        border-color: var(--pis-green) !important;
+      }
+
+      /* ── 스크롤바 ───────────────────────────────────────────────── */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #dcd7cf;
+        border-radius: 999px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+    </style>
   </head>
   <body>
     <!--
@@ -20,7 +573,28 @@
       1) "projects" 컬렉션 미리보기 — 실제 목록 카드(A형·B형)와 상세 페이지 모양
       2) 미리보기 전용 스타일 — 사이트와 같은 폰트·브랜드 컬러
       3) placeholder-string 위젯 — 입력칸 안에 회색 예시 문구 표시
+      4) 관리 화면 테마 — 사이트와 같은 폰트·색·모서리·그림자 (겉모습만)
     -->
+    <!--
+      프로젝트 목록의 기본 보기를 카드(그리드)로 지정합니다.
+      Decap CMS는 viewStyle을 localStorage의 "decap-cms.entries.viewStyle"에
+      저장하고, 값이 없을 때만 리스트로 시작합니다.
+      → 값이 아직 없을 때만 그리드로 넣어 두므로, 사용자가 직접
+        리스트 보기를 고르면 그 선택이 그대로 유지됩니다.
+      (CMS 스크립트가 로드되기 전에 실행되어야 합니다.)
+    -->
+    <script>
+      (function () {
+        try {
+          var KEY = 'decap-cms.entries.viewStyle';
+          if (!window.localStorage.getItem(KEY)) {
+            window.localStorage.setItem(KEY, 'VIEW_STYLE_GRID');
+          }
+        } catch (error) {
+          /* 저장소를 쓸 수 없는 환경에서는 CMS 기본값을 그대로 따릅니다. */
+        }
+      })();
+    </script>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script>
       (function () {
@@ -314,6 +888,46 @@
         };
 
         CMS.registerWidget('placeholder-string', PlaceholderControl, PlaceholderPreview);
+      })();
+    </script>
+    <script>
+      /*
+        Decap CMS가 필수가 아닌 칸의 라벨 뒤에 자동으로 붙이는 "(선택사항)"
+        글자를 화면에서만 없앱니다. 필수 여부 설정은 그대로 유지됩니다.
+        (필수 항목은 config.yml 라벨 끝의 " *"로 구분합니다.)
+      */
+      (function () {
+        var MARKER = /^\(\s*(optional|선택사항)\s*\)$/;
+
+        function cleanLabels() {
+          var labels = document.querySelectorAll('label');
+          for (var i = 0; i < labels.length; i += 1) {
+            var spans = labels[i].querySelectorAll(':scope > span');
+            for (var j = 0; j < spans.length; j += 1) {
+              var span = spans[j];
+              if (span.className) continue;
+              if (MARKER.test((span.textContent || '').trim())) {
+                span.parentNode.removeChild(span);
+              }
+            }
+          }
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', cleanLabels);
+        } else {
+          cleanLabels();
+        }
+
+        var queued = false;
+        new MutationObserver(function () {
+          if (queued) return;
+          queued = true;
+          window.requestAnimationFrame(function () {
+            queued = false;
+            cleanLabels();
+          });
+        }).observe(document.documentElement, { childList: true, subtree: true });
       })();
     </script>
   </body>
