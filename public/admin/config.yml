@@ -53,10 +53,7 @@ collections:
     identifier_field: "title"
     slug: "{{fields.slug}}"
     summary: "{{eventDate}} · {{title}}"
-    sortable_fields:
-      fields: ["eventDate", "title", "category"]
-      default_sort_by: "eventDate"
-      default_sort: "descending"
+    sortable_fields: ["eventDate", "title", "category"]
     view_groups:
       - label: "분야"
         field: "category"
