@@ -305,6 +305,46 @@
         color: currentColor !important;
       }
 
+      /* 상단 메뉴(콘텐츠 · 미디어) — 둘 다 상자 없이 같은 글자 모양으로 통일하고
+         높이 가운데에 맞춥니다. (미디어는 버튼이라 위의 테두리 규칙이 걸립니다.) */
+      .pis-cms-row nav li {
+        display: flex !important;
+        align-items: center !important;
+        align-self: center !important;
+        height: 100% !important;
+      }
+
+      /* 상자가 없으므로 안쪽 여백 대신 항목 사이 간격만 둡니다.
+         (콘텐츠의 왼쪽 끝이 프로젝트 목록 칸 왼쪽 끝과 정확히 맞습니다.) */
+      .pis-cms-row nav li:not(.pis-cms-logo) {
+        margin-right: 28px !important;
+      }
+
+      .pis-cms-row nav li > a,
+      .pis-cms-row nav li > button {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        height: 36px !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: 0 !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.16em !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+      }
+
+      .pis-cms-row nav li > button:hover {
+        border: 0 !important;
+        background: transparent !important;
+      }
+
       /* ── 왼쪽 컬렉션 메뉴 ─────────────────────────────────────────── */
       aside[class*="Sidebar"],
       [class*="SidebarContainer"] {
@@ -1198,13 +1238,14 @@
 
           if (image.tagName === 'IMG') {
             if (isWide) {
-              /* 데스크톱: 로고 폭 = 컬렉션 상자 폭(250px), 높이는 비율대로.
-                 로고 왼쪽 끝·오른쪽 끝이 컬렉션 상자와 같아집니다. */
+              /* 데스크톱: 로고 폭 210px, 높이는 비율대로(약 54px).
+                 로고 왼쪽 끝이 컬렉션 상자 왼쪽 끝과 같습니다. */
               var side = document.querySelector('[class*="SidebarContainer"], aside');
               var sideRect = side ? rectOf(side) : null;
-              var logoWidth = sideRect && sideRect.width > 150 && sideRect.width < 320
+              /* 컬렉션 상자 폭보다 살짝 작게(210px) — 왼쪽 끝만 상자와 맞춥니다. */
+              var logoWidth = sideRect && sideRect.width > 150 && sideRect.width < 210
                 ? Math.round(sideRect.width)
-                : 250;
+                : 210;
               image.style.setProperty('width', logoWidth + 'px', 'important');
               image.style.setProperty('height', 'auto', 'important');
               image.style.setProperty('min-height', '0', 'important');
