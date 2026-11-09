@@ -1197,11 +1197,26 @@
           var height = isWide ? 40 : 36;
 
           if (image.tagName === 'IMG') {
-            image.style.setProperty('height', height + 'px', 'important');
-            image.style.setProperty('min-height', height + 'px', 'important');
-            image.style.setProperty('width', 'auto', 'important');
-            image.style.setProperty('max-width', '260px', 'important');
-            image.style.setProperty('max-height', 'none', 'important');
+            if (isWide) {
+              /* 데스크톱: 로고 폭 = 컬렉션 상자 폭(250px), 높이는 비율대로.
+                 로고 왼쪽 끝·오른쪽 끝이 컬렉션 상자와 같아집니다. */
+              var side = document.querySelector('[class*="SidebarContainer"], aside');
+              var sideRect = side ? rectOf(side) : null;
+              var logoWidth = sideRect && sideRect.width > 150 && sideRect.width < 320
+                ? Math.round(sideRect.width)
+                : 250;
+              image.style.setProperty('width', logoWidth + 'px', 'important');
+              image.style.setProperty('height', 'auto', 'important');
+              image.style.setProperty('min-height', '0', 'important');
+              image.style.setProperty('max-width', logoWidth + 'px', 'important');
+              image.style.setProperty('max-height', 'none', 'important');
+            } else {
+              image.style.setProperty('height', height + 'px', 'important');
+              image.style.setProperty('min-height', height + 'px', 'important');
+              image.style.setProperty('width', 'auto', 'important');
+              image.style.setProperty('max-width', '260px', 'important');
+              image.style.setProperty('max-height', 'none', 'important');
+            }
             /* Decap 기본 규칙(padding: 12px 20px / border-box)이 나중에
                주입되어도 밀리지 않도록 요소에 직접 지정합니다. */
             image.style.setProperty('padding', '0', 'important');
@@ -1280,6 +1295,13 @@
           var style = window.getComputedStyle(main);
           var left = mainRect.left + px(style.paddingLeft) + px(style.borderLeftWidth);
 
+          /* 왼쪽 "컬렉션" 상자의 실제 왼쪽 끝을 기준으로 삼습니다.
+             (본문 바깥 상자는 좌우 여백 18px이 따로 있어, 그 값만 쓰면
+              넓은 화면에서 줄이 18px 왼쪽으로 치우칩니다.) */
+          var side = document.querySelector('[class*="SidebarContainer"], aside');
+          var sideRect = side ? rectOf(side) : null;
+          if (sideRect && sideRect.width > 100 && sideRect.left >= 0) left = sideRect.left;
+
           var span = 0;
           var children = main.children;
           for (var i = children.length - 1; i >= 0; i -= 1) {
@@ -1340,7 +1362,11 @@
 
           bar.classList.add('pis-cms-bar');
 
-          var logo = logoItem || anchor || image;
+          /* 로고 자리는 로고 그림을 직접 감싼 li 하나만 가리킵니다.
+             (row의 flex 항목은 로고+콘텐츠+미디어가 든 nav 전체라서,
+              거기에 붙이면 메뉴가 겹치고 메뉴 아이콘까지 커집니다.) */
+          var logoLi = image.closest ? image.closest('li') : null;
+          var logo = logoLi || logoItem || anchor || image;
           logo.classList.add('pis-cms-logo');
           if (image.tagName === 'IMG') image.classList.add('pis-cms-logo-img');
 
