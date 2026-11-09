@@ -109,44 +109,58 @@
         flex-wrap: nowrap !important;
         width: 100% !important;
         max-width: 100% !important;
+        margin: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        list-style: none !important;
       }
 
-      /* 로고 링크 — 왼쪽 맨 앞에 고정 */
+      /* 로고 — 줄의 맨 앞에 고정 */
       .pis-cms-logo {
         display: flex !important;
         align-items: center !important;
         flex: 0 0 auto !important;
         margin-top: 0 !important;
         margin-bottom: 0 !important;
+        margin-left: 0 !important;
         margin-right: 20px !important;
+        padding-left: 0 !important;
         cursor: pointer !important;
         text-decoration: none !important;
       }
 
-      /* 오른쪽 계정 프로필을 줄의 오른쪽 끝으로 보냅니다.
-         (로고 줄이 따로 있으면 그 줄 안에서, 없으면 상단 바 안에서) */
-      .pis-cms-row > *:last-child,
-      .pis-cms-bar > *:last-child:not(.pis-cms-row) {
+      /* 계정 프로필만 줄의 오른쪽 끝으로 보냅니다.
+         미디어·빠른 추가는 콘텐츠 메뉴 옆에 그대로 붙여 둡니다. */
+      .pis-cms-user {
+        margin-left: auto !important;
+      }
+
+      /* 프로필 요소를 못 찾았을 때의 대비 — 줄의 마지막 항목을 오른쪽으로 */
+      .pis-cms-row > *:last-child:not(.pis-cms-user) {
         margin-left: auto !important;
       }
 
       @media (min-width: 768px) {
-        /* 상단 바 안쪽 영역: 왼쪽 18px에서 시작해 폭 962px
-           (왼쪽 칸 280 + 목록 칸 682)으로 잡습니다.
-           → 컬렉션 칸 왼쪽 끝 18px, 목록 칸 298~980px에 맞춰집니다. */
+        /* 상단 바 안쪽은 본문(AppMainContainer)과 같은 가운데 정렬 규칙을
+           그대로 씁니다. · 본문 내용 폭: 최대 1414px · 좌우 여백: 18px
+           · 로고 자리 280px + 목록 칸 682px = 962px
+           → 로고 왼쪽 끝 = 컬렉션 칸 왼쪽 끝,
+             프로필 오른쪽 끝 = 목록 칸 오른쪽 끝이 됩니다.
+           (화면 폭이 달라져도 본문과 같은 값으로 함께 움직입니다.) */
         .pis-cms-bar {
           height: 76px !important;
           min-height: 76px !important;
           max-height: 76px !important;
           padding-left: 18px !important;
-          padding-right: max(18px, calc(100% - 980px)) !important;
+          padding-right: 18px !important;
         }
 
-        /* 메뉴는 로고 자리(280px) 바로 뒤, 즉 x=298px에서 시작합니다. */
         .pis-cms-row {
-          width: 962px !important;
+          width: min(962px, 100%) !important;
           max-width: 100% !important;
           flex: 0 0 auto !important;
+          margin-left: max(0px, calc((100% - 1414px) / 2)) !important;
+          margin-right: 0 !important;
         }
 
         /* 로고 자리 280px — 크기는 그대로 두고 자리만 확보합니다. */
@@ -1066,9 +1080,11 @@
       /*
         상단 바 구성
         - 로고·메뉴·계정 프로필을 한 줄에 놓는 배치는 CSS가 담당합니다.
-          (로고 280px 자리 → 메뉴 시작 x=298px, 계정은 목록 칸 오른쪽 끝)
-        - 이 스크립트는 Decap이 다시 그려도 클래스와 로고 크기만 다시 적용해
-          CSS 배치가 유지되도록 돕습니다. 위치를 계산해 옮기지 않습니다.
+          CSS는 본문(AppMainContainer)과 같은 가운데 정렬 규칙(최대 폭 1414px,
+          좌우 여백 18px)을 쓰고, 로고 자리 280px 뒤에서 메뉴가 시작합니다.
+        - 이 스크립트는 Decap이 다시 그려도 (1) 메뉴 줄과 프로필 요소를 다시
+          찾아 클래스를 붙이고, (2) 본문의 실제 위치를 재서 그 값을 그대로
+          상단 바 줄에 적용합니다. (위치를 억지로 당기는 보정은 없습니다.)
         - 로그인 화면에는 상단 바가 없으므로 아무것도 하지 않습니다.
       */
       (function () {
@@ -1079,36 +1095,99 @@
           return path.replace(/[^/]*$/, '');
         })();
 
+        /* 왼쪽 칸 280 + 목록 칸 682 = 962 (본문 기준) */
+        var ROW_WIDTH = 962;
+
         var state = { bar: null, logo: null };
         var queued = false;
 
-        function logoMediaIn(node) {
-          /* 아바타 등 다른 이미지보다 로고 파일을 먼저 찾습니다. */
-          var images = node.querySelectorAll('img');
-          for (var k = 0; k < images.length; k += 1) {
-            var src = images[k].getAttribute('src') || '';
-            if (/logo/i.test(src)) return images[k];
-          }
-          var image = node.querySelector('img');
-          if (image) return image;
-          var link = node.querySelector('a');
-          if (link) {
-            var symbol = link.querySelector('svg');
-            return symbol || link;
+        function rectOf(node) {
+          if (!node || typeof node.getBoundingClientRect !== 'function') return null;
+          var rect = node.getBoundingClientRect();
+          if (!rect || rect.width <= 0 || rect.height <= 0) return null;
+          return rect;
+        }
+
+        function px(value) {
+          var number = parseFloat(value);
+          return isNaN(number) ? 0 : number;
+        }
+
+        function findBar() {
+          var headers = document.querySelectorAll('header[class*="AppHeader"]');
+          var candidates = headers.length
+            ? headers
+            : document.querySelectorAll('[class*="AppHeader"]');
+          for (var i = 0; i < candidates.length; i += 1) {
+            var rect = rectOf(candidates[i]);
+            if (!rect) continue;
+            if (rect.top > 8) continue;
+            if (rect.height < 40 || rect.height > 140) continue;
+            return candidates[i];
           }
           return null;
         }
 
-        function firstHeaderBar() {
-          var candidates = document.querySelectorAll('[class*="AppHeader"]');
-          for (var i = 0; i < candidates.length; i += 1) {
-            var node = candidates[i];
-            var media = logoMediaIn(node);
-            if (!media) continue;
-            var rect = node.getBoundingClientRect();
-            if (rect.top > 4) continue;
-            if (rect.height < 40 || rect.height > 140) continue;
-            return { bar: node, image: media };
+        function findLogo(bar) {
+          /* 아바타 등 다른 그림보다 로고 파일을 먼저 찾습니다. */
+          var images = bar.querySelectorAll('img');
+          for (var i = 0; i < images.length; i += 1) {
+            var src = images[i].getAttribute('src') || '';
+            if (/logo/i.test(src) && rectOf(images[i])) return images[i];
+          }
+          for (var j = 0; j < images.length; j += 1) {
+            var name = String(images[j].className || '');
+            if (/avatar|user|profile/i.test(name)) continue;
+            if (rectOf(images[j])) return images[j];
+          }
+          return bar.querySelector('a svg, a img') || null;
+        }
+
+        function findUser(bar, logoNode) {
+          var nodes = bar.querySelectorAll('button, a, [role="button"]');
+          var found = null;
+          for (var i = 0; i < nodes.length; i += 1) {
+            var node = nodes[i];
+            if (!rectOf(node)) continue;
+            if (logoNode && node.contains(logoNode)) continue;
+            var avatar = node.querySelector('img');
+            var isAvatar =
+              avatar && avatar !== logoNode && !/logo/i.test(avatar.getAttribute('src') || '');
+            if (isAvatar) {
+              found = node;
+              continue;
+            }
+            var label = [
+              node.getAttribute('aria-label') || '',
+              String(node.className || ''),
+              node.getAttribute('title') || '',
+            ].join(' ');
+            if (/user|profile|account|프로필|계정/i.test(label)) found = node;
+          }
+          return found;
+        }
+
+        /* 로고·메뉴·프로필을 모두 담는 가장 바깥쪽 가로 줄을 찾습니다. */
+        function findRow(bar, logoNode) {
+          var node = logoNode;
+          var row = null;
+          var guard = 0;
+          while (node && node !== bar && guard < 10) {
+            var display = window.getComputedStyle(node).display || '';
+            if (display.indexOf('flex') !== -1) row = node;
+            node = node.parentElement;
+            guard += 1;
+          }
+          return row;
+        }
+
+        function flexItemWithin(row, node) {
+          var current = node;
+          var guard = 0;
+          while (current && current !== row && guard < 10) {
+            if (current.parentElement === row) return current;
+            current = current.parentElement;
+            guard += 1;
           }
           return null;
         }
@@ -1164,28 +1243,127 @@
           }
         }
 
-        function locate() {
-          var found = firstHeaderBar();
-          if (!found) return false;
+        function clearInline(row) {
+          var props = [
+            'width',
+            'flex',
+            'margin-left',
+            'margin-right',
+            'padding-left',
+            'padding-right',
+          ];
+          for (var i = 0; i < props.length; i += 1) {
+            row.style.removeProperty(props[i]);
+          }
+        }
 
-          var bar = found.bar;
-          var image = found.image;
-          var logo = image.closest ? image.closest('a') : null;
-          if (!logo) logo = image.parentElement;
-          if (!logo) return false;
+        /* 다시 그려졌을 때 이전에 붙인 표시를 먼저 지웁니다. */
+        function clearMarkers() {
+          var rows = document.querySelectorAll('.pis-cms-row');
+          for (var i = 0; i < rows.length; i += 1) {
+            clearInline(rows[i]);
+            rows[i].classList.remove('pis-cms-row');
+          }
+          var users = document.querySelectorAll('.pis-cms-user');
+          for (var j = 0; j < users.length; j += 1) users[j].classList.remove('pis-cms-user');
+          var logos = document.querySelectorAll('.pis-cms-logo');
+          for (var k = 0; k < logos.length; k += 1) logos[k].classList.remove('pis-cms-logo');
+        }
+
+        /* 본문(AppMainContainer)이 실제로 쓰는 위치를 그대로 읽어 옵니다. */
+        function bodyMetrics(bar) {
+          var main = document.querySelector('[class*="AppMainContainer"]');
+          var barRect = rectOf(bar);
+          var mainRect = main ? rectOf(main) : null;
+          if (!barRect || !mainRect) return null;
+
+          var style = window.getComputedStyle(main);
+          var left = mainRect.left + px(style.paddingLeft) + px(style.borderLeftWidth);
+
+          var span = 0;
+          var children = main.children;
+          for (var i = children.length - 1; i >= 0; i -= 1) {
+            var rect = rectOf(children[i]);
+            if (!rect) continue;
+            span = rect.right - left;
+            break;
+          }
+
+          /* 목록 칸 폭을 재지 못했거나 본문을 다 채우는 상자뿐이면
+             본문 기준 기본 폭(280 + 682)을 사용합니다. */
+          if (!(span > 400) || span > mainRect.width - 100) span = ROW_WIDTH;
+
+          /* 상단 바 밖으로 나가지 않도록 한 번 더 제한합니다. */
+          var room = barRect.right - 18 - left;
+          if (room > 200 && span > room) span = room;
+
+          return { left: left, span: span };
+        }
+
+        function alignRow(row, bar) {
+          if (row === bar) return;
+
+          /* 768px 미만의 모바일 동작은 그대로 둡니다. */
+          if (!window.matchMedia('(min-width: 768px)').matches) {
+            clearInline(row);
+            return;
+          }
+
+          var metrics = bodyMetrics(bar);
+          var barRect = rectOf(bar);
+          if (!metrics || !barRect) return;
+
+          var style = window.getComputedStyle(bar);
+          var origin = barRect.left + px(style.borderLeftWidth) + px(style.paddingLeft);
+          var offset = Math.max(0, metrics.left - origin);
+
+          row.style.setProperty('width', metrics.span + 'px', 'important');
+          row.style.setProperty('flex', '0 0 auto', 'important');
+          row.style.setProperty('margin-left', offset + 'px', 'important');
+          row.style.setProperty('margin-right', '0px', 'important');
+          row.style.setProperty('padding-left', '0px', 'important');
+          row.style.setProperty('padding-right', '0px', 'important');
+        }
+
+        function locate() {
+          clearMarkers();
+
+          var bar = findBar();
+          if (!bar) return false;
+
+          var image = findLogo(bar);
+          if (!image) return false;
+
+          var row = findRow(bar, image);
+          var logoItem = row ? flexItemWithin(row, image) : null;
+          var anchor = image.closest ? image.closest('a') : null;
 
           bar.classList.add('pis-cms-bar');
+
+          var logo = logoItem || anchor || image;
           logo.classList.add('pis-cms-logo');
           if (image.tagName === 'IMG') image.classList.add('pis-cms-logo-img');
 
-          var row = logo.parentElement;
-          if (row && row !== bar) row.classList.add('pis-cms-row');
+          if (row) {
+            row.classList.add('pis-cms-row');
+
+            /* 프로필 하나에만 margin-left:auto를 주기 위해 그 항목을 찾습니다. */
+            var userNode = findUser(bar, image);
+            var userItem = userNode ? flexItemWithin(row, userNode) : null;
+            if (!userItem) {
+              var children = row.children;
+              if (children.length) userItem = children[children.length - 1];
+            }
+            if (userItem) userItem.classList.add('pis-cms-user');
+
+            alignRow(row, bar);
+          }
 
           /* 클래스 선택자가 통하지 않는 화면을 대비해, 요소에 직접 크기를
              지정합니다. (직접 지정한 값은 어떤 CSS 규칙보다 우선합니다.) */
           enforceLogoSize(bar, image, logo);
 
-          keepInsideAdmin(logo.tagName === 'A' ? logo : logo.querySelector('a'));
+          keepInsideAdmin(anchor || image);
 
           state.bar = bar;
           state.logo = logo;
@@ -1194,7 +1372,6 @@
 
         function refresh() {
           try {
-            /* 위치는 CSS가 정합니다. 여기서는 요소에 클래스와 크기만 다시 적용합니다. */
             locate();
           } catch (error) {
             /* 어떤 상황에서도 관리 화면 동작을 막지 않습니다. */
@@ -1321,6 +1498,17 @@
             }
             if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) continue;
 
+            /* 일부 버전은 { user: { ... } } 형태로 한 겹 감싸 저장합니다. */
+            if (
+              typeof parsed.login !== 'string' &&
+              typeof parsed.name !== 'string' &&
+              parsed.user &&
+              typeof parsed.user === 'object' &&
+              !Array.isArray(parsed.user)
+            ) {
+              parsed = parsed.user;
+            }
+
             /* login·name 두 값만 사용합니다. */
             var login = typeof parsed.login === 'string' ? parsed.login.trim() : '';
             var name = typeof parsed.name === 'string' ? parsed.name.trim() : '';
@@ -1338,16 +1526,28 @@
           return header;
         }
 
-        function rootsToScan(header) {
-          var roots = [header];
-          /* 드롭다운이 상단 바 밖에 그려지는 경우를 대비합니다. */
-          var floating = document.querySelectorAll('[class*="Dropdown"], [class*="UserMenu"]');
-          for (var i = 0; i < floating.length; i += 1) {
-            var node = floating[i];
-            if (node.closest && node.closest('[class*="AppHeader"]')) continue;
-            roots.push(node);
+        /* 계정 메뉴는 클래스 이름을 예측할 수 없는 팝업(포털)로 그려질 수
+           있습니다. 그래서 화면 구조(클래스 이름)에 기대지 않고 문서 전체에서
+           해당 글자를 찾습니다. (편집기·입력칸 안의 글자는 아래에서 제외) */
+        function rootsToScan() {
+          return [document.body];
+        }
+
+        /* 편집기·입력칸처럼 사용자가 직접 글자를 쓰는 영역인지 확인합니다. */
+        var SKIP_CLASS = /CodeMirror|cm-editor|cm-content|cm-line/;
+
+        function isEditableContext(node) {
+          var element = node.parentNode;
+          var guard = 0;
+          while (element && element.nodeType === 1 && guard < 40) {
+            if (SKIP_TAGS[element.nodeName]) return true;
+            if (element.isContentEditable) return true;
+            if (SKIP_CLASS.test(String(element.className || ''))) return true;
+            if (element === document.body) break;
+            element = element.parentNode;
+            guard += 1;
           }
-          return roots;
+          return false;
         }
 
         /* 텍스트 노드를 직접 바꿉니다. 아바타·아이콘 등 다른 요소는 그대로 둡니다. */
@@ -1358,8 +1558,7 @@
             var targets = [];
             var node = walker.nextNode();
             while (node) {
-              var parent = node.parentNode;
-              if (parent && !SKIP_TAGS[parent.nodeName] && isPlaceholderText(node.nodeValue)) {
+              if (!isEditableContext(node) && isPlaceholderText(node.nodeValue)) {
                 targets.push(node);
               }
               node = walker.nextNode();
@@ -1381,13 +1580,16 @@
           try {
             var profile = readProfile();
             if (!profile) return;
-            /* 이름이 이미 있으면 손대지 않습니다. */
-            if (profile.name) return;
 
-            var header = headerRoot();
-            if (!header) return;
+            /* 이름이 있고, 그 이름이 "Unknown" 같은 대체 문구가 아니면
+               Decap이 이미 올바른 이름을 보여 주고 있으므로 손대지 않습니다.
+               이름이 비어 있거나 대체 문구면 GitHub 아이디를 씁니다. */
+            if (profile.name && !isPlaceholderText(profile.name)) return;
 
-            var roots = rootsToScan(header);
+            /* 로그인 화면에는 계정 메뉴가 없으므로 아무것도 하지 않습니다. */
+            if (!headerRoot()) return;
+
+            var roots = rootsToScan();
             if (observer && observing) {
               observer.disconnect();
               observing = false;
@@ -1433,8 +1635,17 @@
             observing = false;
           }
 
-          /* 메뉴를 열 때도 바로 적용되도록 클릭에 반응합니다. */
-          document.addEventListener('click', schedule, true);
+          /* 아이콘을 눌러 메뉴가 새로 그려지는 경우를 대비해,
+             클릭 직후 몇 차례 더 확인합니다. */
+          document.addEventListener(
+            'click',
+            function () {
+              schedule();
+              window.setTimeout(apply, 80);
+              window.setTimeout(apply, 320);
+            },
+            true
+          );
         }
 
         if (document.readyState === 'loading') {
