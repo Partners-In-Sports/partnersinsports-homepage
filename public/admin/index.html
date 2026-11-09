@@ -80,11 +80,14 @@
         box-shadow: none !important;
       }
 
-      /* 실제 상단 바(스크립트가 표시) — 사이트 헤더와 같은 높이·좌우 여백
-         · 로고/메뉴/오른쪽 버튼을 세로 가운데에 정렬합니다. */
+      /* 실제 상단 바(스크립트가 표시) — 사이트 헤더와 같은 높이
+         · 로고/메뉴/오른쪽 버튼을 한 줄에, 왼쪽부터 차례로 놓습니다.
+         (가운데로 모이지 않도록 justify-content: flex-start) */
       .pis-cms-bar {
         display: flex !important;
         align-items: center !important;
+        justify-content: flex-start !important;
+        flex-wrap: nowrap !important;
         box-sizing: border-box !important;
         height: 68px !important;
         min-height: 68px !important;
@@ -98,22 +101,17 @@
         align-self: center !important;
       }
 
-      @media (min-width: 768px) {
-        .pis-cms-bar {
-          height: 76px !important;
-          min-height: 76px !important;
-          max-height: 76px !important;
-          padding: 0 32px !important;
-        }
-      }
-
       /* 로고를 감싸는 줄 — 안쪽 항목도 세로 가운데 정렬 */
       .pis-cms-row {
         display: flex !important;
         align-items: center !important;
+        justify-content: flex-start !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        max-width: 100% !important;
       }
 
-      /* 로고 링크 — 오른쪽 여백을 두고 눌 수 있게 유지 */
+      /* 로고 링크 — 왼쪽 맨 앞에 고정 */
       .pis-cms-logo {
         display: flex !important;
         align-items: center !important;
@@ -123,6 +121,40 @@
         margin-right: 20px !important;
         cursor: pointer !important;
         text-decoration: none !important;
+      }
+
+      /* 오른쪽 계정 프로필을 줄의 오른쪽 끝으로 보냅니다.
+         (로고 줄이 따로 있으면 그 줄 안에서, 없으면 상단 바 안에서) */
+      .pis-cms-row > *:last-child,
+      .pis-cms-bar > *:last-child:not(.pis-cms-row) {
+        margin-left: auto !important;
+      }
+
+      @media (min-width: 768px) {
+        /* 상단 바 안쪽 영역: 왼쪽 18px에서 시작해 폭 962px
+           (왼쪽 칸 280 + 목록 칸 682)으로 잡습니다.
+           → 컬렉션 칸 왼쪽 끝 18px, 목록 칸 298~980px에 맞춰집니다. */
+        .pis-cms-bar {
+          height: 76px !important;
+          min-height: 76px !important;
+          max-height: 76px !important;
+          padding-left: 18px !important;
+          padding-right: max(18px, calc(100% - 980px)) !important;
+        }
+
+        /* 메뉴는 로고 자리(280px) 바로 뒤, 즉 x=298px에서 시작합니다. */
+        .pis-cms-row {
+          width: 962px !important;
+          max-width: 100% !important;
+          flex: 0 0 auto !important;
+        }
+
+        /* 로고 자리 280px — 크기는 그대로 두고 자리만 확보합니다. */
+        .pis-cms-logo {
+          flex: 0 0 280px !important;
+          width: 280px !important;
+          margin-right: 0 !important;
+        }
       }
 
       /* 로고 — 모바일 36px, 데스크톱 40px · 비율 유지(늘어나지 않음) */
@@ -1032,13 +1064,12 @@
     </script>
     <script>
       /*
-        상단 바 로고 정렬
-        - Decap CMS가 그리는 상단 바의 구조(클래스 이름·중첩 깊이)를 고정해서
-          가정하지 않고, 실제 화면에서 위치를 재서 맞춥니다.
-        - 로고의 왼쪽 가장자리를 왼쪽 "콜렉션" 패널의 왼쪽 가장자리에
-          정확히 맞춥니다(창 폭이 바뀌면 같이 움직입니다).
-        - 로그인 화면에는 상단 바가 없으므로 이 스크립트는 아무것도 하지 않고,
-          로그인 화면 로고는 기존 스타일 그대로 유지됩니다.
+        상단 바 구성
+        - 로고·메뉴·계정 프로필을 한 줄에 놓는 배치는 CSS가 담당합니다.
+          (로고 280px 자리 → 메뉴 시작 x=298px, 계정은 목록 칸 오른쪽 끝)
+        - 이 스크립트는 Decap이 다시 그려도 클래스와 로고 크기만 다시 적용해
+          CSS 배치가 유지되도록 돕습니다. 위치를 계산해 옮기지 않습니다.
+        - 로그인 화면에는 상단 바가 없으므로 아무것도 하지 않습니다.
       */
       (function () {
         var ADMIN_ROOT = (function () {
@@ -1078,24 +1109,6 @@
             if (rect.top > 4) continue;
             if (rect.height < 40 || rect.height > 140) continue;
             return { bar: node, image: media };
-          }
-          return null;
-        }
-
-        function sidebarLeft() {
-          var selectors = [
-            'aside[class*="Sidebar"]',
-            '[class*="SidebarContainer"]',
-            '[class*="Collection"] [class*="Sidebar"]',
-          ];
-          for (var i = 0; i < selectors.length; i += 1) {
-            var list = document.querySelectorAll(selectors[i]);
-            for (var j = 0; j < list.length; j += 1) {
-              var rect = list[j].getBoundingClientRect();
-              if (rect.width < 80 || rect.width > 460) continue;
-              if (rect.height < 60) continue;
-              return rect.left;
-            }
           }
           return null;
         }
@@ -1179,41 +1192,10 @@
           return true;
         }
 
-        function alignLogo() {
-          try {
-            if (!state.logo) return;
-
-            var left = sidebarLeft();
-
-            /* 왼쪽 패널이 없는 화면(글쓰기 화면 · 로그인 화면 등)에서는
-               로고를 원래 자리에 그대로 둡니다. */
-            if (left === null) {
-              state.logo.style.removeProperty('margin-left');
-              return;
-            }
-
-            /* 최대 두 번 측정·보정해 오차를 0.5px 이내로 줄입니다.
-               (레이아웃 방식에 따라 첫 보정이 절반만 반영되는 경우가 있습니다.) */
-            for (var pass = 0; pass < 2; pass += 1) {
-              var rect = state.logo.getBoundingClientRect();
-              var diff = left - rect.left;
-              if (!isFinite(diff) || Math.abs(diff) <= 0.5) return;
-
-              var margin = parseFloat(state.logo.style.getPropertyValue('margin-left'));
-              if (!isFinite(margin)) margin = 0;
-
-              var next = Math.max(-200, Math.min(200, margin + diff));
-              state.logo.style.setProperty('margin-left', next + 'px', 'important');
-            }
-          } catch (error) {
-            /* 위치를 재지 못하면 로고를 그냥 원래 자리에 둡니다. */
-          }
-        }
-
         function refresh() {
           try {
-            if (!locate() || !state.logo) return;
-            alignLogo();
+            /* 위치는 CSS가 정합니다. 여기서는 요소에 클래스와 크기만 다시 적용합니다. */
+            locate();
           } catch (error) {
             /* 어떤 상황에서도 관리 화면 동작을 막지 않습니다. */
           }
