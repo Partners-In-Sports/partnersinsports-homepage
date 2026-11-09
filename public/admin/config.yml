@@ -52,8 +52,11 @@ collections:
     format: "json"
     identifier_field: "title"
     slug: "{{fields.slug}}"
-    summary: "{{title}}"
-    sortable_fields: ["order", "title", "category"]
+    summary: "{{eventDate}} · {{title}}"
+    sortable_fields:
+      fields: ["eventDate", "title", "category"]
+      default_sort_by: "eventDate"
+      default_sort: "descending"
     view_groups:
       - label: "분야"
         field: "category"
@@ -98,7 +101,16 @@ collections:
         widget: "number"
         value_type: "int"
         default: 100
-        hint: "숫자가 작을수록 앞에 나옵니다."
+        hint: "사업 시행일이 같을 때만 순서를 정합니다. 숫자가 작을수록 앞에 나옵니다."
+
+      - label: "사업 시행일 *"
+        name: "eventDate"
+        widget: "datetime"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+        required: false
+        hint: "홈페이지에는 표시되지 않고 정렬에만 쓰입니다. 정확한 날짜를 모르면 그 달의 1일로 입력하세요. (새 프로젝트는 반드시 입력해 주세요. 기존 글로벌 파트너십 카드는 비워 두어도 됩니다.)"
 
       - label: "카드 이미지"
         name: "cardImage"

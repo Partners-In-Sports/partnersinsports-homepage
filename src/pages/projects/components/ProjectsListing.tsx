@@ -1,13 +1,18 @@
 import type { CSSProperties } from 'react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Reveal from '@/components/base/Reveal';
 import { sectionAccentSoft, sectionAccents, workCategories } from '@/mocks/site';
 import { areaFilterHref } from '@/utils/projectLinks';
+import { compareProjects, type ProjectSortDirection } from '@/content/projects';
 import ProjectCard from '@/components/feature/ProjectCard';
 
 interface ProjectItem {
   id: string;
+  /** Sort-only date (YYYY-MM-DD). Never rendered on the card. */
+  eventDate?: string;
+  /** Tie-breaker used only when two projects share the same event date. */
+  order?: number;
   category: string;
   categoryLabel: string;
   title: string;
@@ -52,9 +57,17 @@ export default function ProjectsListing({ items, showFilters = true }: ProjectsL
     setSearchParams({ area: next }, { replace: true });
   };
 
+  // Newest first by default, matching the site-wide order.
+  const [sortDirection, setSortDirection] = useState<ProjectSortDirection>('desc');
+
   const filtered = useMemo(
     () => (active === 'all' ? items : items.filter((project) => project.category === active)),
     [active, items],
+  );
+
+  const visible = useMemo(
+    () => [...filtered].sort((a, b) => compareProjects(a, b, sortDirection)),
+    [filtered, sortDirection],
   );
 
   return (
@@ -63,9 +76,11 @@ export default function ProjectsListing({ items, showFilters = true }: ProjectsL
       style={{ '--cat': sectionAccents.work, '--cat-soft': sectionAccentSoft.work } as CSSProperties}
     >
       <div className="w-full">
-        {showFilters && availableCategories.length > 1 && (
+        {showFilters && (
           <Reveal>
             <div className="flex flex-wrap items-center gap-2 mb-8">
+              {availableCategories.length > 1 && (
+                <>
               <button
                 type="button"
                 onClick={() => setActive('all')}
@@ -95,15 +110,45 @@ export default function ProjectsListing({ items, showFilters = true }: ProjectsL
                   </button>
                 );
               })}
+                </>
+              )}
+              <div
+                role="group"
+                aria-label="정렬 순서"
+                className="ml-1 flex items-center gap-1 rounded-full border border-background-300 p-1"
+              >
+                {([
+                  { value: 'desc', label: '최신순' },
+                  { value: 'asc', label: '오래된순' },
+                ] as { value: ProjectSortDirection; label: string }[]).map((option) => {
+                  const isActive = sortDirection === option.value;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => setSortDirection(option.value)}
+                      aria-pressed={isActive}
+                      className={`rounded-full px-3 py-1.5 font-label text-[11px] tracking-[0.14em] whitespace-nowrap cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground-950/40 ${
+                        isActive
+                          ? 'bg-foreground-950 text-background-50'
+                          : 'text-foreground-600 hover:text-foreground-950'
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  );
+                })}
+              </div>
+
               <span className="ml-auto font-label text-xs tracking-[0.2em] uppercase text-foreground-500 whitespace-nowrap">
-                {String(filtered.length).padStart(2, '0')} entries
+                {String(visible.length).padStart(2, '0')} entries
               </span>
             </div>
           </Reveal>
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-          {filtered.map((project, index) => {
+          {visible.map((project, index) => {
             const to = project.static
               ? undefined
               : project.slug
@@ -131,7 +176,7 @@ export default function ProjectsListing({ items, showFilters = true }: ProjectsL
           })}
         </div>
 
-        {filtered.length === 0 && (
+        {visible.length === 0 && (
           <p className="py-16 text-center text-sm text-foreground-500">
             아직 등록된 내용이 없습니다. 준비 중입니다.
           </p>

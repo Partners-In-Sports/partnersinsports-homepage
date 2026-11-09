@@ -5,6 +5,7 @@
   "cardLabel": "Sporting Events",
   "cardType": "A",
   "order": 9,
+  "eventDate": "2025-09-20",
   "cardImage": "/uploads/project-dogsports-2025-card.webp",
   "cardImageFit": "cover",
   "cardImagePosition": "center",

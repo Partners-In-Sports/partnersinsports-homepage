@@ -27,6 +27,8 @@ interface ProjectFile {
   cardLabel?: string;
   cardType?: 'A' | 'B' | string;
   order?: number;
+  /** Sort-only date (YYYY-MM-DD). Never rendered on the public site. */
+  eventDate?: string;
   cardImage?: string;
   cardImageFit?: 'cover' | 'contain' | string;
   cardImagePosition?: string;
@@ -48,6 +50,10 @@ interface ProjectFile {
 
 export interface ProjectCardItem {
   id: string;
+  /** Sort-only date (YYYY-MM-DD). Never rendered on the public site. */
+  eventDate?: string;
+  /** Tie-breaker used only when two projects share the same event date. */
+  order?: number;
   category: string;
   categoryLabel: string;
   title: string;
@@ -107,13 +113,50 @@ const defaultDetailLabels: Record<string, string> = {
   merchandising: 'Merchandising · 머천다이징',
 };
 
+/** Anything that can take part in the public project sorting. */
+export interface SortableProject {
+  eventDate?: string;
+  order?: number;
+}
+
+export type ProjectSortDirection = 'desc' | 'asc';
+
+/**
+ * Default order everywhere on the site:
+ *   1. eventDate, newest first (or oldest first when direction is 'asc')
+ *   2. same date → `order` ascending (smaller numbers first)
+ *   3. projects without an eventDate always sit at the very bottom
+ *
+ * ISO dates (YYYY-MM-DD) compare correctly as plain strings.
+ */
+export function compareProjects(
+  a: SortableProject,
+  b: SortableProject,
+  direction: ProjectSortDirection = 'desc',
+): number {
+  const aDate = (a.eventDate ?? '').trim();
+  const bDate = (b.eventDate ?? '').trim();
+  const orderOf = (item: SortableProject) => item.order ?? Number.MAX_SAFE_INTEGER;
+
+  if (!aDate && !bDate) return orderOf(a) - orderOf(b);
+  if (!aDate) return 1;
+  if (!bDate) return -1;
+
+  if (aDate !== bDate) {
+    const olderFirst = aDate < bDate ? -1 : 1;
+    return direction === 'asc' ? olderFirst : -olderFirst;
+  }
+
+  return orderOf(a) - orderOf(b);
+}
+
 const projectFiles = import.meta.glob('./*.json', { eager: true });
 
 const records: ProjectFile[] = Object.values(projectFiles)
   .map((module) => ((module as { default?: ProjectFile }).default ?? module) as ProjectFile)
   .filter((record): record is ProjectFile => Boolean(record && record.slug && record.title))
-  // `order` decides the position on the Projects list; files without it go last.
-  .sort((a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER));
+  // Newest project first. `eventDate` decides the position, `order` only breaks ties.
+  .sort((a, b) => compareProjects(a, b));
 
 const isClickable = (record: ProjectFile) => (record.cardType ?? 'A') !== 'B';
 
@@ -122,6 +165,8 @@ export const projects: ProjectCardItem[] = records.map((record) => {
   const clickable = isClickable(record);
   return {
     id: record.slug,
+    eventDate: record.eventDate?.trim() ? record.eventDate.trim() : undefined,
+    order: record.order,
     category: record.category,
     categoryLabel: record.cardLabel || defaultCategoryLabels[record.category] || record.category,
     title: record.title,

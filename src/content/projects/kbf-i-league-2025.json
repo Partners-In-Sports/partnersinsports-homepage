@@ -5,6 +5,7 @@
   "cardLabel": "Research Projects",
   "cardType": "A",
   "order": 5,
+  "eventDate": "2025-01-01",
   "cardImage": "/uploads/project-kbf-logo.webp",
   "cardImageFit": "contain",
   "cardImagePosition": "center top",

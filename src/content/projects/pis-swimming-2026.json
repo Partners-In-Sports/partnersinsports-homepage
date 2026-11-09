@@ -5,6 +5,7 @@
   "cardLabel": "Sporting Events",
   "cardType": "A",
   "order": 8,
+  "eventDate": "2026-02-22",
   "cardImage": "/uploads/project-pis-swimming-2026-card.webp",
   "cardImageFit": "cover",
   "cardImagePosition": "center center",
