@@ -1041,6 +1041,14 @@
           '.pis-empty{margin:10px 0 0;font-size:12px;line-height:1.6;color:#a8a29a;}',
           '.pis-cta{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:10px 18px;border-radius:6px;background:#221e1f;color:#fdfcfb;font-family:Archivo,Inter,sans-serif;font-size:10px;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;}',
           '.pis-note{margin-top:22px;padding:12px 14px;border:1px dashed #dcd8d2;border-radius:6px;background:#faf9f7;font-size:12px;line-height:1.7;color:#6d6a64;}',
+          /* 사이트 문구·이미지 미리보기: 사진이 칸보다 커도 칸 폭에 맞춰 줄어들게 합니다. */
+          'html,body{max-width:100%;overflow-x:hidden;}',
+          'body{padding:16px;font-family:Inter,sans-serif;font-size:14px;line-height:1.7;color:#221e1f;word-break:keep-all;overflow-wrap:anywhere;white-space:normal;}',
+          'body *{max-width:100%;box-sizing:border-box;}',
+          'body img{display:block;width:100%;max-width:100%;height:auto;border-radius:6px;margin:8px 0;}',
+          'body img[src*="logo"]{width:auto;max-height:48px;}',
+          'body .pis-preview img{border-radius:0;margin:0;}',
+          'body p,body label,body div{overflow-wrap:anywhere;}',
         ].join('\n');
 
         CMS.registerPreviewStyle(PREVIEW_CSS, { raw: true });
