@@ -1256,7 +1256,10 @@
           },
         });
 
-        CMS.registerPreviewTemplate('site', SitePreview);
+        /* 파일형 컬렉션은 컬렉션 이름이 아니라 파일 이름(home·about·business·company)으로 등록해야 합니다. */
+        ['site', 'home', 'about', 'business', 'company'].forEach(function (name) {
+          CMS.registerPreviewTemplate(name, SitePreview);
+        });
 
         CMS.registerPreviewStyle(PREVIEW_CSS, { raw: true });
 
