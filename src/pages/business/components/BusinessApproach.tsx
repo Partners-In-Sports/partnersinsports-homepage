@@ -1,9 +1,10 @@
 import type { CSSProperties } from 'react';
 import Reveal from '@/components/base/Reveal';
 import BilingualText from '@/components/base/BilingualText';
+import businessData from '@/content/site/business.json';
 import { sectionAccents } from '@/mocks/site';
 
-const steps = [
+const baseSteps = [
   {
     no: '01',
     icon: 'ri-search-line',
@@ -29,6 +30,11 @@ const steps = [
     text: '이벤트 현장에서 글로벌 무대까지, 실행 단계에서도 함께합니다.',
   },
 ];
+
+const steps = baseSteps.map((step, index) => ({
+  ...step,
+  text: businessData.steps?.[index]?.trim() || step.text,
+}));
 
 export default function BusinessApproach() {
   return (

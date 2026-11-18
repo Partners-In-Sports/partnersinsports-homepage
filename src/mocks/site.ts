@@ -3,6 +3,26 @@
 // site is served from "/" or from a sub-path.
 const uploadsBase = `${__BASE_PATH__.replace(/\/+$/, '')}/uploads/`;
 
+// Editable copy and photos. These JSON files are edited from the /admin screen
+// ("사이트 문구·이미지"), so a change there is published without touching code.
+import homeContent from '@/content/site/home.json';
+import aboutData from '@/content/site/about.json';
+import businessData from '@/content/site/business.json';
+import companyData from '@/content/site/company.json';
+
+/** "/uploads/file.webp" (as written by the admin screen) -> URL under the deploy base path. */
+const upload = (path: string | undefined, fallback = ''): string => {
+  const value = (path ?? '').trim();
+  if (!value) return fallback;
+  if (/^(https?:)?\/\//i.test(value) || value.startsWith('data:')) return value;
+  if (value.startsWith('/uploads/')) return `${uploadsBase}${value.replace(/^\/uploads\//, '')}`;
+  return value;
+};
+
+/** Text from the admin screen; falls back to the built-in copy when a field is empty. */
+const copy = (value: string | undefined, fallback: string): string =>
+  value && value.trim() ? value : fallback;
+
 // Official Partners in Sports logo colours — one shared source of truth used
 // by both the navigation and the business-category interactions.
 // Order (used wherever the colours appear as a sequence):
@@ -74,8 +94,8 @@ export const companyInfo = {
   nameEn: 'Partners in Sports',
   nameKo: '(주)파트너스인스포츠',
   tagline: 'Your Best Partner',
-  ceo: '최원일',
-  address: '서울특별시 마포구 홍익로6길 18, 4층',
+  ceo: copy(companyData.ceo, '최원일'),
+  address: copy(companyData.address, '서울특별시 마포구 홍익로6길 18, 4층'),
 };
 
 // How a visit is arranged. No street address is shown — the exact location is
@@ -128,33 +148,29 @@ export const heroContent = {
   brand: 'Partners in Sports',
   title: 'Your Best Partner',
   statement: 'Success happens when preparation meets opportunity.',
-  intro:
+  intro: copy(
+    homeContent.heroIntro,
     '리서치·전략, 스포츠 이벤트, 글로벌 파트너십, 머천다이징 전반에서 활동하는 스포츠 비즈니스 전문 기업입니다.',
+  ),
 };
 
-export const heroBackgrounds = [
-  {
-    id: 'hero-1',
-    image:
-      `${uploadsBase}hero-baseball-stadium.webp`,
-    alt: 'Floodlit baseball stadium at night seen from behind home plate',
-    focus: 'top',
-  },
-  {
-    id: 'hero-2',
-    image:
-      `${uploadsBase}hero-basketball-arena.webp`,
-    alt: 'Indoor basketball arena during a game with players on court',
-    focus: 'bottom',
-  },
-  {
-    id: 'hero-3',
-    image:
-      `${uploadsBase}hero-swimming-pool.webp`,
-    alt: 'Underwater view of a swimming pool with lane ropes and light ripples',
-    focus: 'top',
-  },
+const heroDefaults = [
+  { image: 'hero-baseball-stadium.webp', alt: 'Floodlit baseball stadium at night', focus: 'top' },
+  { image: 'hero-basketball-arena.webp', alt: 'Indoor basketball arena during a game', focus: 'bottom' },
+  { image: 'hero-swimming-pool.webp', alt: 'Underwater view of a swimming pool', focus: 'top' },
 ];
+
+const heroSlides = (homeContent.heroSlides ?? []).filter((slide) => slide && slide.image);
+
+export const heroBackgrounds = (heroSlides.length
+  ? heroSlides
+  : heroDefaults.map((d) => ({ ...d, image: `/uploads/${d.image}` }))
+).map((slide, index) => ({
+  id: `hero-${index + 1}`,
+  image: upload(slide.image),
+  alt: slide.alt?.trim() ? slide.alt : 'Partners in Sports',
+  focus: slide.focus === 'bottom' ? 'bottom' : slide.focus === 'center' ? 'center' : 'top',
+}));
 
 export const heroMarquee = [
   'Research Projects',
@@ -166,12 +182,12 @@ export const heroMarquee = [
 export const workIntro = {
   eyebrow: 'Selected work · 주요 프로젝트',
   title: 'Our Work',
-  description: '스포츠 산업 전반에서 수행한 프로젝트를 소개합니다.',
+  description: copy(homeContent.workDescription, '스포츠 산업 전반에서 수행한 프로젝트를 소개합니다.'),
 };
 
 // Four core business areas. Each one is an interactive gateway into its own
 // portfolio listing. `accent` / `accentSoft` come from the official logo colours.
-export const workCategories = [
+const workCategoriesBase = [
   {
     id: 'research',
     slug: 'research',
@@ -236,11 +252,20 @@ export const workCategories = [
   },
 ];
 
+export const workCategories = workCategoriesBase.map((category) => {
+  const edited = (homeContent as unknown as Record<string, { text?: string; image?: string } | undefined>)[category.id];
+  return {
+    ...category,
+    short: copy(edited?.text, category.short),
+    image: upload(edited?.image, category.image),
+  };
+});
+
 // The four core business areas explained on the dedicated BUSINESS page.
 // Names and order are kept identical to the homepage and About page cards:
 // Research Projects → Sporting Events Consulting → Global Partnerships →
 // Merchandising.
-export const businessAreas = [
+const businessAreasBase = [
   {
     id: 'research',
     no: '01',
@@ -282,11 +307,19 @@ export const businessAreas = [
   },
 ];
 
+export const businessAreas = businessAreasBase.map((area) => ({
+  ...area,
+  description: copy(
+    (businessData as unknown as Record<string, { text?: string } | undefined>)[area.id]?.text,
+    area.description,
+  ),
+}));
+
 // Project records are not kept here. Every project lives in its own JSON file
 // under src/content/projects/ and is loaded from @/content/projects.
 // Project records are not kept here. Every project lives in its own JSON file
 // under src/content/projects/ and is loaded from @/content/projects.
-export const aboutContent = {
+const aboutContentBase = {
   eyebrow: 'Who we are',
   title: 'About Partners in Sports',
   quote: 'Success happens when preparation meets opportunity.',
@@ -299,9 +332,18 @@ export const aboutContent = {
   imageAlt: 'Partners in Sports meeting room in Seoul',
 };
 
+const editedParagraphs = (aboutData.paragraphs ?? []).filter((text) => text && text.trim());
+
+export const aboutContent = {
+  ...aboutContentBase,
+  paragraphs: editedParagraphs.length ? editedParagraphs : aboutContentBase.paragraphs,
+  image: upload(aboutData.image, aboutContentBase.image),
+  imageAlt: copy(aboutData.imageAlt, aboutContentBase.imageAlt),
+};
+
 // The four areas Partners in Sports works across — presented on the About page
 // directly below the company introduction.
-export const aboutPillars = [
+const aboutPillarsBase = [
   {
     id: 'pillar-1',
     icon: 'ri-line-chart-line',
@@ -327,6 +369,11 @@ export const aboutPillars = [
     text: '브랜드·캐릭터 등 IP 기반 굿즈 기획·제작·판매\nIP 라이선스 상품화 전략 및 유통 자문',
   },
 ];
+
+export const aboutPillars = aboutPillarsBase.map((pillar, index) => ({
+  ...pillar,
+  text: copy(aboutData.pillars?.[index], pillar.text),
+}));
 
 // NOTE: Placeholder timeline. Dates and milestones have not been provided,
 // so the entries below intentionally stay editable.

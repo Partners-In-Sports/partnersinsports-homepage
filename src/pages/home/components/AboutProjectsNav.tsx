@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '@/components/base/Reveal';
 import BilingualText from '@/components/base/BilingualText';
+import homeContent from '@/content/site/home.json';
 import { sectionAccentSoft, sectionAccentText, sectionAccents } from '@/mocks/site';
 
 interface Gateway {
@@ -25,7 +26,7 @@ const gateways: Gateway[] = [
     label: 'About',
     no: '01',
     eyebrow: 'About · 회사소개',
-    text: '회사와 구성원, 그리고 우리가 지향하는 파트너의 모습을 소개합니다.',
+    text: homeContent.aboutPanelText?.trim() || '회사와 구성원, 그리고 우리가 지향하는 파트너의 모습을 소개합니다.',
     to: '/about',
     accent: sectionAccents.about,
     textColor: sectionAccentText.about,
@@ -37,7 +38,7 @@ const gateways: Gateway[] = [
     label: 'Projects',
     no: '02',
     eyebrow: 'Projects · 프로젝트',
-    text: '스포츠 산업 전 분야의 프로젝트를 살펴보세요.',
+    text: homeContent.projectsPanelText?.trim() || '스포츠 산업 전 분야의 프로젝트를 살펴보세요.',
     to: '/projects',
     accent: sectionAccents.work,
     textColor: sectionAccentText.work,

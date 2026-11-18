@@ -1,0 +1,40 @@
+{
+  "heroIntro": "리서치·전략, 스포츠 이벤트, 글로벌 파트너십, 머천다이징 전반에서 활동하는 스포츠 비즈니스 전문 기업입니다.",
+  "heroSlides": [
+    {
+      "image": "/uploads/hero-baseball-stadium.webp",
+      "alt": "Floodlit baseball stadium at night seen from behind home plate",
+      "focus": "top"
+    },
+    {
+      "image": "/uploads/hero-basketball-arena.webp",
+      "alt": "Indoor basketball arena during a game with players on court",
+      "focus": "bottom"
+    },
+    {
+      "image": "/uploads/hero-swimming-pool.webp",
+      "alt": "Underwater view of a swimming pool with lane ropes and light ripples",
+      "focus": "top"
+    }
+  ],
+  "workDescription": "스포츠 산업 전반에서 수행한 프로젝트를 소개합니다.",
+  "research": {
+    "text": "스포츠 분야 연구 프로젝트 수행\n데이터 분석 기반 전략 수립 및 인사이트 제공",
+    "image": "/uploads/work-research.jpg"
+  },
+  "events": {
+    "text": "국내외 스포츠 이벤트 기획 및 운영",
+    "image": "/uploads/work-events.jpg"
+  },
+  "global": {
+    "text": "해외 대학·기관과의 협력 및 교류 프로젝트 추진\n국제 공동 연구 및 교육 프로그램 운영",
+    "image": "/uploads/work-global.jpg"
+  },
+  "merchandising": {
+    "text": "브랜드/캐릭터 등 IP를 활용한\n굿즈 기획·제작·판매",
+    "image": "/uploads/work-merch.jpg"
+  },
+  "aboutPanelText": "회사와 구성원, 그리고 우리가 지향하는 파트너의 모습을 소개합니다.",
+  "projectsPanelText": "스포츠 산업 전 분야의 프로젝트를 살펴보세요.",
+  "contactText": "프로젝트, 파트너십, 연구 관련 문의가 있으시면 연락 주세요. 도움이 될 방법을 안내해 드리겠습니다."
+}

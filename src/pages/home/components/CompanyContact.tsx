@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '@/components/base/Reveal';
 import BilingualText from '@/components/base/BilingualText';
+import homeContent from '@/content/site/home.json';
 import { aboutContent, companyInfo, sectionAccentSoft, sectionAccents, workCategories } from '@/mocks/site';
 
 export default function CompanyContact() {
@@ -69,8 +70,8 @@ export default function CompanyContact() {
                   Let's talk
                 </h3>
                 <p className="mt-4 text-sm leading-relaxed text-foreground-600">
-                  프로젝트, 파트너십, 연구 관련 문의가 있으시면 연락 주세요. 도움이 될 방법을
-                  안내해 드리겠습니다.
+                  {homeContent.contactText?.trim() ||
+                    '프로젝트, 파트너십, 연구 관련 문의가 있으시면 연락 주세요. 도움이 될 방법을 안내해 드리겠습니다.'}
                 </p>
               </div>
 
