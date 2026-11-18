@@ -220,80 +220,78 @@ collections:
   - name: "site"
     label: "사이트 문구·이미지"
     label_singular: "페이지"
-    description: "홈·회사소개·사업영역 페이지의 문구와 사진을 고칩니다. 게시하면 1~2분 뒤 사이트에 반영됩니다."
+    description: "게시하면 1~2분 뒤 사이트에 반영됩니다."
     files:
       - name: "home"
         label: "홈 페이지"
         file: "src/content/site/home.json"
         fields:
-          - label: "첫 화면 소개 문구"
+          - label: "첫 화면 소개"
             name: "heroIntro"
             widget: "text"
-            hint: "첫 화면 큰 제목 아래에 나오는 한글 소개 문장입니다."
           - label: "첫 화면 배경 사진"
             name: "heroSlides"
             widget: "list"
             summary: "{{fields.alt}}"
-            hint: "순서대로 바뀌며 나옵니다. 가로로 긴 사진(권장 1920px 이상)을 쓰세요."
+            hint: "가로 사진 1920px 이상"
             fields:
               - { label: "사진", name: "image", widget: "image" }
-              - { label: "사진 설명(검색·접근성용, 영문 가능)", name: "alt", widget: "string", required: false }
-              - label: "사진에서 보여줄 부분"
+              - { label: "사진 설명", name: "alt", widget: "string", required: false }
+              - label: "기준 위치"
                 name: "focus"
                 widget: "select"
                 default: "top"
                 options:
                   - { label: "위쪽", value: "top" }
                   - { label: "아래쪽", value: "bottom" }
-          - label: "사업 소개 문구 (Our Work 아래 설명)"
+          - label: "Our Work 소개"
             name: "workDescription"
             widget: "string"
           - label: "사업영역 카드 · Research Projects"
             name: "research"
             widget: "object"
             fields:
-              - { label: "카드 문구 (줄바꿈 가능)", name: "text", widget: "text" }
-              - { label: "카드 사진 (가로:세로 4:3 권장)", name: "image", widget: "image", required: false }
+              - { label: "문구", name: "text", widget: "text" }
+              - { label: "사진 (4:3)", name: "image", widget: "image", required: false }
           - label: "사업영역 카드 · Sporting Events Consulting"
             name: "events"
             widget: "object"
             fields:
-              - { label: "카드 문구 (줄바꿈 가능)", name: "text", widget: "text" }
-              - { label: "카드 사진 (가로:세로 4:3 권장)", name: "image", widget: "image", required: false }
+              - { label: "문구", name: "text", widget: "text" }
+              - { label: "사진 (4:3)", name: "image", widget: "image", required: false }
           - label: "사업영역 카드 · Global Partnerships"
             name: "global"
             widget: "object"
             fields:
-              - { label: "카드 문구 (줄바꿈 가능)", name: "text", widget: "text" }
-              - { label: "카드 사진 (가로:세로 4:3 권장)", name: "image", widget: "image", required: false }
+              - { label: "문구", name: "text", widget: "text" }
+              - { label: "사진 (4:3)", name: "image", widget: "image", required: false }
           - label: "사업영역 카드 · Merchandising"
             name: "merchandising"
             widget: "object"
             fields:
-              - { label: "카드 문구 (줄바꿈 가능)", name: "text", widget: "text" }
-              - { label: "카드 사진 (가로:세로 4:3 권장)", name: "image", widget: "image", required: false }
-          - { label: "About 패널 문구", name: "aboutPanelText", widget: "string" }
-          - { label: "Projects 패널 문구", name: "projectsPanelText", widget: "string" }
-          - { label: "문의 안내 문구 (홈 하단)", name: "contactText", widget: "text" }
+              - { label: "문구", name: "text", widget: "text" }
+              - { label: "사진 (4:3)", name: "image", widget: "image", required: false }
+          - { label: "About 패널", name: "aboutPanelText", widget: "string" }
+          - { label: "Projects 패널", name: "projectsPanelText", widget: "string" }
+          - { label: "문의 안내", name: "contactText", widget: "text" }
 
       - name: "about"
         label: "회사소개 페이지"
         file: "src/content/site/about.json"
         fields:
-          - label: "회사 소개 문단"
+          - label: "소개 문단"
             name: "paragraphs"
             widget: "list"
             field: { label: "문단", name: "text", widget: "text" }
-            hint: "문단 하나가 한 칸입니다. 순서대로 위에서 아래로 나옵니다."
           - { label: "소개 사진", name: "image", widget: "image", required: false }
-          - { label: "사진 설명 (영문 가능)", name: "imageAlt", widget: "string", required: false }
-          - label: "사업 영역 설명 (4개, 위에서부터 Research · Events · Global · Merchandising 순서)"
+          - { label: "사진 설명", name: "imageAlt", widget: "string", required: false }
+          - label: "사업 영역 설명"
             name: "pillars"
             widget: "list"
             min: 4
             max: 4
-            field: { label: "설명 (줄바꿈 가능)", name: "text", widget: "text" }
-            hint: "4개 칸의 순서는 바꾸지 마세요."
+            field: { label: "설명", name: "text", widget: "text" }
+            hint: "4칸 순서 고정 (Research · Events · Global · Merchandising)"
 
       - name: "business"
         label: "사업영역 페이지"
@@ -302,26 +300,26 @@ collections:
           - label: "Research Projects 설명"
             name: "research"
             widget: "object"
-            fields: [{ label: "설명 (빈 줄로 문단 나누기)", name: "text", widget: "text" }]
+            fields: [{ label: "설명", name: "text", widget: "text" }]
           - label: "Sporting Events Consulting 설명"
             name: "events"
             widget: "object"
-            fields: [{ label: "설명 (빈 줄로 문단 나누기)", name: "text", widget: "text" }]
+            fields: [{ label: "설명", name: "text", widget: "text" }]
           - label: "Global Partnerships 설명"
             name: "global"
             widget: "object"
-            fields: [{ label: "설명 (빈 줄로 문단 나누기)", name: "text", widget: "text" }]
+            fields: [{ label: "설명", name: "text", widget: "text" }]
           - label: "Merchandising 설명"
             name: "merchandising"
             widget: "object"
-            fields: [{ label: "설명 (빈 줄로 문단 나누기)", name: "text", widget: "text" }]
-          - label: "업무 방식 설명 (Discover · Analyse · Strategies · Deliver 순서)"
+            fields: [{ label: "설명", name: "text", widget: "text" }]
+          - label: "업무 방식 설명"
             name: "steps"
             widget: "list"
             min: 4
             max: 4
             field: { label: "설명", name: "text", widget: "string" }
-            hint: "4개 칸의 순서는 바꾸지 마세요."
+            hint: "4칸 순서 고정 (Discover · Analyse · Strategies · Deliver)"
 
       - name: "company"
         label: "회사 정보"
