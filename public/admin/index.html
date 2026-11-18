@@ -1049,7 +1049,214 @@
           'body img[src*="logo"]{width:auto;max-height:48px;}',
           'body .pis-preview img{border-radius:0;margin:0;}',
           'body p,body label,body div{overflow-wrap:anywhere;}',
+          '.pw{font-family:Inter,sans-serif;color:#221e1f;}',
+          '.pw *{box-sizing:border-box;}',
+          '.pw-cap{font-family:Archivo,Inter,sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8a857d;margin:0 0 8px;}',
+          '.pw-frame{border:1px solid #e7e3dd;border-radius:8px;overflow:hidden;background:#fefdfc;}',
+          '.pw-note{margin:10px 0 0;font-size:11px;line-height:1.6;color:#8a857d;}',
+          '.pw-sec{padding:16px;border-top:1px solid #efeeeb;}',
+          '.pw-dark{background:#0e0c09;color:#fefdfc;}',
+          '.pw-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}',
+          '.pw-zone{position:relative;margin-top:14px;padding:12px 8px 8px;border:1.5px dashed #00a9e6;border-radius:6px;background:rgba(0,169,230,.05);}',
+          '.pw-tag{position:absolute;top:-9px;left:8px;display:inline-flex;align-items:center;gap:4px;padding:0 6px;border-radius:10px;background:#00a9e6;color:#fff;font-size:10px;line-height:17px;white-space:nowrap;}',
+          '.pw-tag b{font-weight:700;}',
+          '.pw-onDark{background:rgba(0,169,230,.12);}',
+          '.pw-copy{margin:0;font-size:13px;line-height:1.7;white-space:pre-line;color:inherit;}',
+          '.pw-copy--empty{color:#a8a29a;font-size:11px;}',
+          '.pw-fixed{color:#a8a29a;font-family:Archivo,Inter,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:10px;margin-top:10px;}',
+          '.pw-h1{font-size:26px;font-weight:800;line-height:1;letter-spacing:-.03em;color:#fefdfc;}',
+          '.pw-h2{font-size:15px;font-weight:700;}',
+          '.pw-h3{font-size:11px;letter-spacing:.14em;}',
+          '.pw-eyebrow{margin-top:0;}',
+          '.pw-light{color:#cecdc9;}',
+          '.pw-hero{position:relative;min-height:300px;background:#0e0c09;color:#fefdfc;overflow:hidden;}',
+          'body .pw-hero__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7;margin:0;border-radius:0;}',
+          '.pw-hero__ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,12,9,.7),rgba(14,12,9,.45) 50%,rgba(14,12,9,.9));}',
+          '.pw-hero__in{position:relative;padding:22px 16px 18px;}',
+          '.pw-btns{display:flex;gap:8px;margin-top:14px;}',
+          '.pw-btns span{padding:8px 14px;border-radius:6px;background:#fefdfc;color:#0e0c09;font-size:11px;}',
+          '.pw-btns span+span{background:transparent;color:#fefdfc;border:1px solid rgba(255,255,255,.45);}',
+          '.pw-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}',
+          '.pw-strip small{display:block;margin-top:3px;font-size:10px;color:#6d6a64;}',
+          '.pw-pic{width:100%;overflow:hidden;background:#ecebe7;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#a8a29a;text-align:center;}',
+          'body .pw-pic img{width:100%;height:100%;object-fit:cover;margin:0;border-radius:0;}',
+          '.pw-card{padding:8px;border:1px solid #e7e3dd;border-radius:6px;background:#fff;}',
+          '.pw-card--dark{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);}',
+          '.pw-cardname{margin-top:8px;}',
+          '.pw-panel{padding:10px;border:1px solid #e7e3dd;border-radius:6px;background:#f8f7f6;}',
+          '.pw-row{padding:6px 0 10px;border-bottom:1px solid #efeeeb;}',
         ].join('\n');
+
+        /* -------------------------------------------------------------------
+           2-2. 사이트 문구·이미지 미리보기 — 실제 페이지 배치도에 맞춰 표시
+           (번호가 붙은 점선 상자가 지금 수정 중인 문구·사진 자리입니다)
+           ------------------------------------------------------------------- */
+        var WORK_AREAS = [
+          { key: 'research', no: '01', name: 'Research Projects' },
+          { key: 'events', no: '02', name: 'Sporting Events Consulting' },
+          { key: 'global', no: '03', name: 'Global Partnerships' },
+          { key: 'merchandising', no: '04', name: 'Merchandising' },
+        ];
+        var STEP_NAMES = ['Discover', 'Analyse', 'Strategies', 'Deliver'];
+
+        function zone(n, label, children, cls) {
+          return h('div', { key: 'z' + n, className: 'pw-zone ' + (cls || '') }, [
+            h('span', { key: 'tag', className: 'pw-tag' }, [h('b', { key: 'n' }, n + ' '), label]),
+            children,
+          ]);
+        }
+        function fixedText(str, cls) {
+          return h('div', { className: 'pw-fixed ' + (cls || '') }, str);
+        }
+        function copyText(value) {
+          var v = text(value);
+          return h('p', { className: 'pw-copy' + (v ? '' : ' pw-copy--empty') },
+            v || '(비워 두면 기존 문구가 그대로 나옵니다)');
+        }
+        function pic(props, path, ratio) {
+          var url = assetUrl(props, path);
+          return h('div', { className: 'pw-pic', style: { aspectRatio: ratio || '4 / 3' } },
+            url ? h('img', { src: url, alt: '' }) : h('span', null, '사진 없음 (기존 사진 사용)'));
+        }
+        function pageFrame(title, kids) {
+          return h('div', { className: 'pw' }, [
+            h('div', { key: 'cap', className: 'pw-cap' }, title),
+            h('div', { key: 'frame', className: 'pw-frame' }, kids),
+            h('p', { key: 'note', className: 'pw-note' },
+              '번호가 붙은 점선 상자가 수정할 수 있는 자리이고, 회색 글씨는 코드에 고정된 제목입니다. 실제 사이트와 글꼴·크기·색은 조금 다를 수 있습니다.'),
+          ]);
+        }
+
+        function HomeView(props, d) {
+          var slides = (Array.isArray(d.heroSlides) ? d.heroSlides : []).filter(function (x) { return x && x.image; });
+          var heroUrl = slides.length ? assetUrl(props, slides[0].image) : '';
+          var hero = h('section', { key: 'hero', className: 'pw-hero' }, [
+            heroUrl ? h('img', { key: 'bg', className: 'pw-hero__bg', src: heroUrl, alt: '' }) : null,
+            h('div', { key: 'ov', className: 'pw-hero__ov' }),
+            h('div', { key: 'in', className: 'pw-hero__in' }, [
+              fixedText('SPORTS BUSINESS & CONSULTING · SEOUL', 'pw-light'),
+              fixedText('YOUR BEST PARTNER', 'pw-h1'),
+              zone('①', '첫 화면 소개 문구', copyText(d.heroIntro), 'pw-onDark'),
+              h('div', { key: 'btns', className: 'pw-btns' }, [
+                h('span', { key: 'a' }, '프로젝트 보기'),
+                h('span', { key: 'b' }, '문의하기'),
+              ]),
+            ]),
+          ]);
+          var strip = zone('②', '첫 화면 배경 사진 ' + slides.length + '장 (순서대로 전환)',
+            h('div', { className: 'pw-strip' }, slides.length
+              ? slides.map(function (sl, i) {
+                  return h('div', { key: i, className: 'pw-strip__item' }, [
+                    pic(props, sl.image, '16 / 9'),
+                    h('small', { key: 'c' }, (i + 1) + '번 · ' + (sl.focus === 'bottom' ? '아래쪽' : '위쪽') + ' 기준'),
+                  ]);
+                })
+              : h('span', { className: 'pw-copy pw-copy--empty' }, '사진을 추가하면 여기에 나옵니다')));
+          var work = h('section', { key: 'work', className: 'pw-sec' }, [
+            fixedText('SELECTED WORK · 주요 프로젝트', 'pw-eyebrow'),
+            fixedText('OUR WORK', 'pw-h2'),
+            zone('③', '사업 소개 문구', copyText(d.workDescription)),
+            h('div', { key: 'grid', className: 'pw-grid2' }, WORK_AREAS.map(function (a) {
+              var v = d[a.key] || {};
+              return h('div', { key: a.key, className: 'pw-card' }, [
+                zone('④', a.no + ' 카드 사진', pic(props, v.image, '4 / 3')),
+                fixedText(a.no + ' · ' + a.name, 'pw-cardname'),
+                zone('⑤', a.no + ' 카드 문구', copyText(v.text)),
+              ]);
+            })),
+          ]);
+          var panels = h('section', { key: 'panels', className: 'pw-sec pw-grid2' }, [
+            h('div', { key: 'p1', className: 'pw-panel' }, [
+              fixedText('01 · ABOUT', 'pw-h3'),
+              zone('⑥', 'About 패널 문구', copyText(d.aboutPanelText)),
+            ]),
+            h('div', { key: 'p2', className: 'pw-panel' }, [
+              fixedText('02 · PROJECTS', 'pw-h3'),
+              zone('⑦', 'Projects 패널 문구', copyText(d.projectsPanelText)),
+            ]),
+          ]);
+          var contact = h('section', { key: 'contact', className: 'pw-sec' }, [
+            fixedText("CONTACT · LET'S TALK", 'pw-h3'),
+            zone('⑧', '문의 안내 문구 (홈 하단)', copyText(d.contactText)),
+          ]);
+          return pageFrame('홈 페이지 (위에서 아래로)', [hero, h('div', { key: 'sp', className: 'pw-sec' }, strip), work, panels, contact]);
+        }
+
+        function AboutView(props, d) {
+          var paras = (Array.isArray(d.paragraphs) ? d.paragraphs : []).filter(text);
+          var pillars = Array.isArray(d.pillars) ? d.pillars : [];
+          return pageFrame('회사소개 페이지', [
+            h('section', { key: 'intro', className: 'pw-sec' }, [
+              fixedText('WHO WE ARE · ABOUT PARTNERS IN SPORTS', 'pw-h2'),
+              h('div', { key: 'row', className: 'pw-grid2' }, [
+                zone('①', '소개 문단', h('div', null, paras.length
+                  ? paras.map(function (t, i) { return h('div', { key: i }, copyText(t)); })
+                  : copyText(''))),
+                zone('②', '소개 사진', pic(props, d.image, '4 / 3')),
+              ]),
+            ]),
+            h('section', { key: 'pil', className: 'pw-sec' }, [
+              fixedText('WHAT WE DO', 'pw-h3'),
+              h('div', { key: 'g', className: 'pw-grid2' }, WORK_AREAS.map(function (a, i) {
+                return h('div', { key: a.key, className: 'pw-card' }, [
+                  fixedText(a.name, 'pw-cardname'),
+                  zone('③', a.no + ' 사업 영역 설명', copyText(pillars[i])),
+                ]);
+              })),
+            ]),
+          ]);
+        }
+
+        function BusinessView(props, d) {
+          var steps = Array.isArray(d.steps) ? d.steps : [];
+          return pageFrame('사업영역 페이지', [
+            h('section', { key: 'areas', className: 'pw-sec' }, WORK_AREAS.map(function (a) {
+              var v = d[a.key] || {};
+              return h('div', { key: a.key, className: 'pw-row' }, [
+                fixedText(a.no + ' · ' + a.name, 'pw-h3'),
+                zone('①', a.name + ' 설명', copyText(v.text)),
+              ]);
+            })),
+            h('section', { key: 'how', className: 'pw-sec pw-dark' }, [
+              fixedText('HOW WE WORK · FROM FIRST QUESTION TO DELIVERED RESULT', 'pw-h3 pw-light'),
+              h('div', { key: 'g', className: 'pw-grid2' }, STEP_NAMES.map(function (n, i) {
+                return h('div', { key: n, className: 'pw-card pw-card--dark' }, [
+                  fixedText('0' + (i + 1) + ' · ' + n, 'pw-cardname pw-light'),
+                  zone('②', (i + 1) + '단계 설명', copyText(steps[i]), 'pw-onDark'),
+                ]);
+              })),
+            ]),
+          ]);
+        }
+
+        function CompanyView(props, d) {
+          return pageFrame('회사 정보 (홈 하단 · 문의 페이지 · 푸터에 표시)', [
+            h('section', { key: 'c', className: 'pw-sec' }, [
+              fixedText('COMPANY · 회사정보', 'pw-h3'),
+              h('div', { key: 'g', className: 'pw-grid2' }, [
+                zone('①', '대표자', copyText(d.ceo)),
+                zone('②', '주소', copyText(d.address)),
+              ]),
+            ]),
+          ]);
+        }
+
+        var SitePreview = createClass({
+          render: function () {
+            var props = this.props;
+            var d = getData(props.entry);
+            var slug = text(props.entry && props.entry.get && props.entry.get('slug'));
+            if (!slug) {
+              slug = d.heroSlides ? 'home' : d.pillars ? 'about' : d.steps ? 'business' : 'company';
+            }
+            if (slug === 'home') return HomeView(props, d);
+            if (slug === 'about') return AboutView(props, d);
+            if (slug === 'business') return BusinessView(props, d);
+            return CompanyView(props, d);
+          },
+        });
+
+        CMS.registerPreviewTemplate('site', SitePreview);
 
         CMS.registerPreviewStyle(PREVIEW_CSS, { raw: true });
 
